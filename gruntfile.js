@@ -1,22 +1,20 @@
-var properties = require('./src/js/game/properties.js');
+var properties = require('./src/js/game/properties.js')
 
 module.exports = function (grunt) {
+  grunt.loadNpmTasks('grunt-browserify')
+  grunt.loadNpmTasks('grunt-cache-bust')
+  grunt.loadNpmTasks('grunt-contrib-clean')
+  grunt.loadNpmTasks('grunt-contrib-compress')
+  grunt.loadNpmTasks('grunt-contrib-connect')
+  grunt.loadNpmTasks('grunt-contrib-copy')
+  grunt.loadNpmTasks('grunt-contrib-jade')
+  grunt.loadNpmTasks('grunt-contrib-jshint')
+  grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-contrib-watch')
+  grunt.loadNpmTasks('grunt-open')
+  grunt.loadNpmTasks('grunt-pngmin')
 
-  grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-cache-bust');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-compress');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-jade');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-stylus');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-open');
-  grunt.loadNpmTasks('grunt-pngmin');
-
-  var productionBuild = !!(grunt.cli.tasks.length && grunt.cli.tasks[0] === 'build');
+  var productionBuild = !!(grunt.cli.tasks.length && grunt.cli.tasks[0] === 'build')
 
   grunt.initConfig({
 
@@ -76,17 +74,21 @@ module.exports = function (grunt) {
         files: 'src/templates/*.jade',
         tasks: ['jade']
       },
-      stylus: {
-        files: 'src/style/*.styl',
-        tasks: ['stylus']
-      },
       images: {
         files: 'src/images/**/*',
         tasks: ['copy:images']
       },
-      audio:{
+      audio: {
         files: 'src/audio/**/*',
         tasks: ['copy:audio']
+      },
+      fonts: {
+        files: 'src/fonts/*',
+        tasks: ['copy:fonts']
+      },
+      css: {
+        files: 'src/style/*',
+        tasks: ['copy:css']
       }
     },
 
@@ -136,15 +138,6 @@ module.exports = function (grunt) {
       }
     },
 
-    stylus: {
-      compile: {
-        files: { 'build/style/index.css': ['src/style/index.styl'] },
-          options: {
-            sourcemaps: !productionBuild
-        }
-      }
-    },
-
     clean: ['./build/'],
 
     pngmin: {
@@ -154,7 +147,7 @@ module.exports = function (grunt) {
       },
       compile: {
         files: [ { src: 'src/images/*.png', dest: 'src/images/' } ] }
-      },
+    },
 
     copy: {
       images: {
@@ -162,6 +155,12 @@ module.exports = function (grunt) {
       },
       audio: {
         files: [ { expand: true, cwd: 'src/audio/', src: ['**'], dest: 'build/audio/' } ]
+      },
+      fonts: {
+        files: [ { expand: true, cwd: 'src/fonts/', src: '**', dest: 'build/fonts/' } ]
+      },
+      css: {
+        files: [ { expand: true, cwd: 'src/style/', src: ['**'], dest: 'build/style/' } ]
       },
       phaserArcade: {
         files: [ {
@@ -203,38 +202,39 @@ module.exports = function (grunt) {
       zip: { files: [ { expand: true, cwd: 'build/', src: ['**/*'], dest: '<%= pkg.name %>/' } ] },
       cocoon: { files: [ { expand: true, cwd: 'build/', src: ['**/*'] } ] }
     }
-  });
+  })
 
   grunt.registerTask('default', [
     'clean',
     'browserify',
     'jade',
-    'stylus',
     'copy:images',
     'copy:audio',
+    'copy:fonts',
+    'copy:css',
     'copy:phaserArcade',
     'connect',
     'open',
     'watch'
-  ]);
+  ])
 
   grunt.registerTask('build', [
-    /*'jshint',
-    */'clean',
+    'clean',
     'browserify',
     'jade',
-    'stylus',
     'uglify',
     'copy:images',
     'copy:audio',
+    'copy:fonts',
+    'copy:css',
     'copy:phaserArcadeMin',
     'cacheBust',
     'connect',
     'open',
     'watch'
-  ]);
+  ])
 
-  grunt.registerTask('optimise', ['pngmin', 'copy:images']);
-  grunt.registerTask('cocoon', ['compress:cocoon']);
-  grunt.registerTask('zip', ['compress:zip']);
-};
+  grunt.registerTask('optimise', ['pngmin', 'copy:images'])
+  grunt.registerTask('cocoon', ['compress:cocoon'])
+  grunt.registerTask('zip', ['compress:zip'])
+}
