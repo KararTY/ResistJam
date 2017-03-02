@@ -1,5 +1,4 @@
 let play = {}
-let Phaser = Phaser || {}
 
 // Global scope the variables.
 let player
