@@ -14,8 +14,6 @@ Checkout from source:
 
     git clone git@github.com:kararty/resistjam kekistani-jam
     cd kekistani-jam
-    rm -rf .git/
-    git init && git add -A && git commit -m "Importing Phaser boilerplate."
 
 Next, inside the project, you need to install the project's various NPM dependencies:
 
