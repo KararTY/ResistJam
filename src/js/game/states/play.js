@@ -30,14 +30,14 @@ const DIRECTIONS = Object.freeze({
   * Constant representing rightward movement
   */
   'RIGHT': 8
-});
+})
 
-let play = {};
+let play = {}
 
 play.create = function () {
-  let kek = this.game;
-  this.testBox;
-  this.player = new Character(kek);
+  let kek = this.game
+  this.testBox
+  this.player = new Character(kek)
   let centerScreenX = kek.world.centerX
   /* Not used
    let centerScreenY = kek.world.centerY */
@@ -48,105 +48,116 @@ play.create = function () {
   kek.physics.arcade.gravity.y = 300
 
   // Make an immovable box.
-  testBox = kek.add.sprite(centerScreenX, window.innerHeight - 250, 'box')
-  testBox.anchor.setTo(0.5, 0)
-  kek.physics.enable(testBox, Phaser.Physics.ARCADE)
-  testBox.body.collideWorldBounds = true
-  testBox.body.static = true
-  testBox.body.immovable = true
+  this.testBox = kek.add.sprite(centerScreenX, window.innerHeight - 250, 'box')
+  this.testBox.anchor.setTo(0.5, 0)
+  kek.physics.enable(this.testBox, Phaser.Physics.ARCADE)
+  this.testBox.body.collideWorldBounds = true
+  this.testBox.body.static = true
+  this.testBox.body.immovable = true
 
   // Make the player.
-  this.player.sprite = kek.add.sprite(255, 255, 'character');
-  kek.physics.enable(this.player.sprite, Phaser.Physics.ARCADE);
-  this.player.sprite.body.collideWorldBounds = true;
-  this.player.sprite.body.gravity.y = 1000;
-  this.player.sprite.body.maxVelocity.y = 900;
-  console.log(this.player);
+  this.player.sprite = kek.add.sprite(255, 255, 'character')
+  this.player.sprite.anchor.setTo(0.5)
+  kek.physics.enable(this.player.sprite, Phaser.Physics.ARCADE)
+  this.player.sprite.body.setCircle(120)
+  this.player.sprite.body.collideWorldBounds = true
+  this.player.sprite.body.gravity.y = 1000
+  this.player.sprite.body.maxVelocity.y = 900
+  console.log(this.player)
 }
 
 // Think of this function as an endless loop.
 play.update = function () {
-  let kek = this.game;
+  let kek = this.game
 
   // Check for collision between player and testbox.
-  kek.physics.arcade.collide(testBox, this.player.sprite);
+  kek.physics.arcade.collide(this.testBox, this.player.sprite)
 
   // Otherwise idle character
   // There's sample code for animations here.
-  if(this.player.facing !== DIRECTIONS.NONE) {
-      this.player.sprite.animations.stop();
-      if (this.player.facing === DIRECTIONS.LEFT) { this.player.frame = 0; }
-      else { this.player.sprite.frame = 5; }
-      this.player.facing = DIRECTIONS.NONE;
+  if (this.player.facing !== DIRECTIONS.NONE) {
+    this.player.sprite.animations.stop()
+    if (this.player.facing === DIRECTIONS.LEFT) this.player.frame = 0
+    else this.player.sprite.frame = 5
+    this.player.facing = DIRECTIONS.NONE
   }
 }
 
 // Render is mostly used for debugging.
 play.render = function () {
-  let kek = this.game;
-  kek.debug.bodyInfo(testBox, 16, 24);
+  let kek = this.game
+  kek.debug.bodyInfo(this.testBox, 16, 24)
+  kek.debug.body(this.player.sprite)
 }
 
-//TODO
-//Move this to it's own file
-var Character = function(game) {
-  this.game = game;
-  this.facing = DIRECTIONS.LEFT;
-  this.controls = this.bindKeys();
-  console.log(this.controls);
-  this.sprite = null;
-};
-Character.prototype.sprite;
-Character.prototype.game;
-Character.prototype.facing;
-Character.prototype.controls;
+// TODO
+// Move this to its own file
+var Character = function (game) {
+  this.game = game
+  this.facing = DIRECTIONS.LEFT
+  this.controls = this.bindKeys()
+  console.log(this.controls)
+  this.sprite = null
+}
+Character.prototype.sprite
+Character.prototype.game
+Character.prototype.facing
+Character.prototype.controls
 /**
  * Bind keys and set up keyboard movement events.
  * Binds both WASD and Arrow Key controls
  * Binds jump to SPACEBAR
  */
-Character.prototype.bindKeys = function() {
-  //Create key bindings
-  let controls = this.game.input.keyboard.addKeys({ 'up': Phaser.KeyCode.W, 'left': Phaser.KeyCode.A, 'down': Phaser.KeyCode.S, 'right': Phaser.KeyCode.D, 
-  'altup': Phaser.KeyCode.UP, 'altleft': Phaser.KeyCode.LEFT, 'altdown': Phaser.KeyCode.DOWN, 'altright': Phaser.KeyCode.RIGHT, 
-  'jump': Phaser.KeyCode.SPACEBAR });
+Character.prototype.bindKeys = function () {
+  // Create key bindings
+  let controls = this.game.input.keyboard.addKeys({
+    'up': Phaser.KeyCode.W,
+    'left': Phaser.KeyCode.A,
+    'down': Phaser.KeyCode.S,
+    'right': Phaser.KeyCode.D,
+    'altup': Phaser.KeyCode.UP,
+    'altleft': Phaser.KeyCode.LEFT,
+    'altdown': Phaser.KeyCode.DOWN,
+    'altright': Phaser.KeyCode.RIGHT,
+    'jump': Phaser.KeyCode.SPACEBAR
+  })
 
-  //Add movement events
-  //Jumping
-  controls.up.onDown.add(function(data) { if(this.sprite.body.velocity.y === 0) { this.sprite.body.velocity.y = - 900; } }, this);
-  //Moving Left
-  controls.left.onDown.add(function(data) {
-    this.sprite.body.velocity.x = -150;
-    if(this.facing !== DIRECTIONS.LEFT){
-      this.animations.play('left');
-      this.facing = DIRECTIONS.LEFT;
+  // Add movement events
+  // Jumping
+  controls.up.onDown.add(function (data) { if (this.sprite.body.velocity.y === 0) { this.sprite.body.velocity.y = -900 } }, this)
+  // Moving Left
+  controls.left.onDown.add(function (data) {
+    this.sprite.body.velocity.x = -150
+    if (this.facing !== DIRECTIONS.LEFT) {
+      this.animations.play('left')
+      this.facing = DIRECTIONS.LEFT
     }
-  }, this);
-  //Clearing movement
-  controls.left.onUp.add(function(data) {
-    this.sprite.body.velocity.x = 0;
-  }, this);
-  //Moving Right
-  controls.right.onDown.add(function(data) {
-    this.sprite.body.velocity.x = 150;
+  }, this)
+  // Clearing movement
+  controls.left.onUp.add(function (data) {
+    this.sprite.body.velocity.x = 0
+  }, this)
+  // Moving Right
+  controls.right.onDown.add(function (data) {
+    this.sprite.body.velocity.x = 150
     if (this.facing !== DIRECTIONS.RIGHT) {
-      this.sprite.animations.play('right');
-      this.facing = DIRECTIONS.RIGHT;
+      this.sprite.animations.play('right')
+      this.facing = DIRECTIONS.RIGHT
     }
-  }, this);
-  controls.right.onUp = controls.left.onUp;
+  }, this)
+  controls.right.onUp = controls.left.onUp
 
-  //Bind Alternates
-  controls.altup.onDown = controls.up.onDown;
-  controls.altleft.onDown = controls.left.onDown;
-  controls.altleft.onUp = controls.left.onUp;
-  controls.altright.onDown = controls.right.onDown;
-  controls.altright.onUp = controls.left.onUp;
+  // Bind Alternates
+  controls.altup.onDown = controls.up.onDown
+  controls.altleft.onDown = controls.left.onDown
+  controls.altleft.onUp = controls.left.onUp
+  controls.altright.onDown = controls.right.onDown
+  controls.altright.onUp = controls.left.onUp
 
-  //Bind action keys
-  controls.jump.onDown = controls.up.onDown;
+  // Bind action keys
+  controls.jump.onDown = controls.up.onDown
 
-  return controls;
+  return controls
 }
 
-module.exports = play;
+module.exports = play
