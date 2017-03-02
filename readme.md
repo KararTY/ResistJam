@@ -8,7 +8,7 @@ Praise kek and whatnot.
 
 You will need to first install [Node.js](http://nodejs.org/download/) and the grunt-cli: `npm install -g grunt-cli`.
 
-### Setup Your Project
+### Setup project
 
 Checkout from source:
 
@@ -25,7 +25,7 @@ And you should now be ready to spin up a development build of your new project:
 
 ## Developing
 
-Your first port of call will likely be to customise the properties found in `package.json` and `src/js/game/properties.js`.
+Files in `src/js/game/states/` is where the code is.
 
 Files in the `build` directory will always be generated, as such these will removed without warning and should generally not be edited.
 
