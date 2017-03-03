@@ -1,6 +1,4 @@
-var Character = require('../objs/character')
-
-let Character = require('../objs/character.js')
+let Character = require('../objs/character')
 
 let play = {}
 
@@ -69,24 +67,6 @@ play.update = function () {
 
   // Check for collision between player and testbox.
   kek.physics.arcade.collide(this.testBox, this.player.sprite)
-
-  if (this.player.controller.left.isDown) {
-    this.player.sprite.body.velocity.x = -150
-    if (this.facing !== DIRECTIONS.LEFT) {
-      // this.animations.play('left')
-      this.facing = DIRECTIONS.LEFT
-    }
-  } else if (this.player.controller.right.isDown) {
-    this.player.sprite.body.velocity.x = 150
-    if (this.facing !== DIRECTIONS.RIGHT) {
-      // this.player.sprite.animations.play('right')
-      this.facing = DIRECTIONS.RIGHT
-    }
-  } else this.player.sprite.body.velocity.x = 0
-
-  if (this.player.controller.jump.isDown) {
-    if (this.player.sprite.body.velocity.y === 0) this.player.sprite.body.velocity.y = -900
-  }
 
   // Otherwise idle character
   // There's sample code for animations here.
