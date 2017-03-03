@@ -1,5 +1,7 @@
 var Character = require('../objs/character')
 
+let Character = require('../objs/character.js')
+
 let play = {}
 
 play.create = function () {
@@ -9,6 +11,8 @@ play.create = function () {
   let centerScreenX = kek.world.centerX
   /* Not used
    let centerScreenY = kek.world.centerY */
+
+  kek.world.setBounds(0, 0, 1920, 1080)
 
   // Start up the physics system
   // (Should switch to P2 before we do anything complex)
@@ -51,10 +55,12 @@ play.create = function () {
   this.player.sprite.anchor.setTo(0.5)
   kek.physics.enable(this.player.sprite, Phaser.Physics.ARCADE)
   this.player.sprite.body.setSize(256, 256)
+
   this.player.sprite.body.collideWorldBounds = true
-  this.player.sprite.body.gravity.y = 1000
+  this.player.sprite.body.gravity.y = 1250
   this.player.sprite.body.maxVelocity.y = 900
-  console.log(this.player)
+  kek.camera.follow(this.player.sprite)
+  console.dir(this.player)
 }
 
 // Think of this function as an endless loop.
@@ -64,6 +70,24 @@ play.update = function () {
   // Check for collision between player and testbox.
   kek.physics.arcade.collide(this.testBox, this.player.sprite)
 
+  if (this.player.controller.left.isDown) {
+    this.player.sprite.body.velocity.x = -150
+    if (this.facing !== DIRECTIONS.LEFT) {
+      // this.animations.play('left')
+      this.facing = DIRECTIONS.LEFT
+    }
+  } else if (this.player.controller.right.isDown) {
+    this.player.sprite.body.velocity.x = 150
+    if (this.facing !== DIRECTIONS.RIGHT) {
+      // this.player.sprite.animations.play('right')
+      this.facing = DIRECTIONS.RIGHT
+    }
+  } else this.player.sprite.body.velocity.x = 0
+
+  if (this.player.controller.jump.isDown) {
+    if (this.player.sprite.body.velocity.y === 0) this.player.sprite.body.velocity.y = -900
+  }
+
   // Otherwise idle character
   // There's sample code for animations here.
   if (this.player.previousPosition === this.player.position) {
@@ -71,10 +95,12 @@ play.update = function () {
   }
 }
 
-// Render is mostly used for debugging.
+// Render is mostly used for debugging, also an endless loop. THIS IS HTML!
 play.render = function () {
   let kek = this.game
-  kek.debug.bodyInfo(this.testBox, 16, 24)
+  kek.debug.text(`left.isDown: ${this.player.controller.left.isDown}`, 100, 16)
+  kek.debug.text(`right.isDown: ${this.player.controller.right.isDown}`, 100, 32)
+  kek.debug.text(`up.isDown: ${this.player.controller.up.isDown}`, 100, 48)
   kek.debug.body(this.player.sprite)
 }
 
