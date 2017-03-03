@@ -29,9 +29,7 @@ Controller.prototype = {
   jump: null,
   shoot: null,
   getDefaultBinding: function (game) {
-    console.log(`game is ${game.input}\nthis.game is ${this.game.input}`)
     let gameObj = game || this.game
-    console.log(`gameObj is ${gameObj.input}`)
     let keys = gameObj.input.keyboard.addKeys({
       up: Phaser.KeyCode.W,
       left: Phaser.KeyCode.A,
