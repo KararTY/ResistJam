@@ -46,9 +46,13 @@ play.create = function () {
   // Controller to action binding
   // As the game progresses we may want to move this binding into character.js
   // Until we know what the characters actions are this will do
-  this.player.controller.up.onDown.add(function (data) { if (this.sprite.body.velocity.y === 0) { this.sprite.body.velocity.x = -900 } }, this.player)
+  this.player.controller.up.onDown.add(function (data) {
+    if (this.sprite.body.velocity.y < 1) { this.sprite.body.moveUp(900) }
+    console.log(this.sprite.position)
+  }, this.player)
+  this.player.controller.up.onHoldContext = this
   this.player.controller.left.onDown.add(function (data) {
-    this.sprite.body.velocity.x = -150
+    this.sprite.body.moveLeft(150)
     if (this.sprite.previousPosition.x > this.sprite.position.x) {
       this.animations.play('left')
     }
