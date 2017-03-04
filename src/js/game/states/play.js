@@ -50,22 +50,23 @@ play.create = function () {
     if (this.sprite.body.velocity.y < 1) { this.sprite.body.moveUp(900) }
     console.log(this.sprite.position)
   }, this.player)
-  this.player.controller.up.onHoldContext = this
-  this.player.controller.left.onDown.add(function (data) {
+  this.player.controller.left.onHoldCallback = function (data) {
     this.sprite.body.moveLeft(150)
     if (this.sprite.previousPosition.x > this.sprite.position.x) {
-      this.animations.play('left')
+      this.sprite.animations.play('left')
     }
-  }, this.player)
+  }
+  this.player.controller.left.onHoldContext = this.player
   this.player.controller.left.onUp.add(function (data) {
     if (!this.controller.right.isDown) { this.sprite.body.velocity.x = 0 }
   }, this.player)
-  this.player.controller.right.onDown.add(function (data) {
-    this.sprite.body.velocity.x = 150
+  this.player.controller.right.onHoldCallback = function (data) {
+    this.sprite.body.moveRight(150)
     if (this.sprite.previousPosition.x < this.sprite.position.x) {
       this.sprite.animations.play('right')
     }
-  }, this.player)
+  }
+  this.player.controller.right.onHoldContext = this.player
   this.player.controller.right.onUp.add(function (data) {
     if (!this.controller.left.isDown) { this.sprite.body.velocity.x = 0 }
   }, this.player)
