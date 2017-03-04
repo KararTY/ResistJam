@@ -212,7 +212,7 @@ module.exports = function (grunt) {
     'copy:audio',
     'copy:fonts',
     'copy:css',
-    'copy:phaserArcade',
+    'copy:phaserP2',
     'connect',
     'open',
     'watch'
@@ -227,7 +227,7 @@ module.exports = function (grunt) {
     'copy:audio',
     'copy:fonts',
     'copy:css',
-    'copy:phaserArcadeMin',
+    'copy:phaserP2Min',
     'cacheBust',
     'connect',
     'open',
