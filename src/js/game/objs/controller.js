@@ -1,10 +1,24 @@
-var Controller = function (game, binding) {
-  this.game = game
-  this.binding = binding || this.getDefaultBinding(game)
-}
-Controller.prototype = {
-  game: null,
-  get binding () {
+var GameObject = require('./gameobject')
+
+var Controller = function (binding) {
+  this.up = null
+  this.left = null
+  this.down = null
+  this.right = null
+  this.jump = null
+  this.shoot = null
+
+  this.game.input.mouse.capture = true
+
+  this.binding = function (binding) {
+    if (binding) {
+      this.up = binding.up
+      this.left = binding.left
+      this.down = binding.down
+      this.right = binding.right
+      this.jump = binding.jump
+      this.shoot = binding.shoot
+    }
     return {
       up: this.up,
       left: this.left,
@@ -13,33 +27,22 @@ Controller.prototype = {
       jump: this.jump,
       shoot: this.shoot
     }
-  },
-  set binding (value) {
-    this.up = value.up || null
-    this.left = value.left || null
-    this.down = value.down || null
-    this.right = value.right || null
-    this.jump = value.jump || null
-    this.shoot = value.shoot || null
-  },
-  up: null,
-  left: null,
-  down: null,
-  right: null,
-  jump: null,
-  shoot: null,
-  getDefaultBinding: function (game) {
-    let gameObj = game || this.game
-    let keys = gameObj.input.keyboard.addKeys({
+  }
+
+  this.getDefaultBinding = function () {
+    let keys = this.game.input.keyboard.addKeys({
       up: Phaser.KeyCode.W,
       left: Phaser.KeyCode.A,
       down: Phaser.KeyCode.S,
       right: Phaser.KeyCode.D,
       jump: Phaser.KeyCode.SPACEBAR
     })
-    keys.shoot = gameObj.input.pointer1.leftButton
+    keys.shoot = this.game.input.activePointer.leftButton
     return keys
   }
+
+  this.binding(binding || this.getDefaultBinding())
 }
+Controller.prototype = new GameObject()
 
 module.exports = Controller

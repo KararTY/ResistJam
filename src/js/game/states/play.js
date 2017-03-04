@@ -1,11 +1,13 @@
 let Character = require('../objs/character')
-
+let GameObject = require('../objs/gameobject')
 let play = {}
 
 play.create = function () {
+  // Set game value for GameObjects
+  GameObject.prototype.game = this.game
+
   let kek = this.game
   this.testBox
-
   let centerScreenX = kek.world.centerX
   /* Not used
    let centerScreenY = kek.world.centerY */
@@ -37,40 +39,12 @@ play.create = function () {
   }
 
   // Make the player.
-  this.player = new Character(kek, undefined, kek.add.sprite(0, 0, 'box'))
+  this.player = new Character(kek.add.sprite(0, 0, 'box')) // note the new constructor
   this.player.sprite.anchor.setTo(0.5)
   kek.physics.p2.enable(this.player.sprite)
   this.player.sprite.body.fixedRotation = true
   this.player.sprite.body.damping = 0.5
   this.spriteMaterial = kek.physics.p2.createMaterial('spriteMaterial', this.player.body)
-  // Controller to action binding
-  // As the game progresses we may want to move this binding into character.js
-  // Until we know what the characters actions are this will do
-  this.player.controller.up.onDown.add(function (data) {
-    if (this.sprite.body.velocity.y < 1) { this.sprite.body.moveUp(900) }
-    console.log(this.sprite.position)
-  }, this.player)
-  this.player.controller.left.onHoldCallback = function (data) {
-    this.sprite.body.moveLeft(150)
-    if (this.sprite.previousPosition.x > this.sprite.position.x) {
-      this.sprite.animations.play('left')
-    }
-  }
-  this.player.controller.left.onHoldContext = this.player
-  this.player.controller.left.onUp.add(function (data) {
-    if (!this.controller.right.isDown) { this.sprite.body.velocity.x = 0 }
-  }, this.player)
-  this.player.controller.right.onHoldCallback = function (data) {
-    this.sprite.body.moveRight(150)
-    if (this.sprite.previousPosition.x < this.sprite.position.x) {
-      this.sprite.animations.play('right')
-    }
-  }
-  this.player.controller.right.onHoldContext = this.player
-  this.player.controller.right.onUp.add(function (data) {
-    if (!this.controller.left.isDown) { this.sprite.body.velocity.x = 0 }
-  }, this.player)
-  this.player.controller.jump.onDown = this.player.controller.up.onDown
 
   // Camera follow player sprite.
   kek.camera.follow(this.player.sprite)
@@ -84,6 +58,8 @@ play.create = function () {
 
 // Think of this function as an endless loop.
 play.update = function () {
+  // Handle Input
+  this.player.handleControllerInput()
   // Otherwise idle character
   // There's sample code for animations here.
   if (this.player.previousPosition === this.player.position) {
