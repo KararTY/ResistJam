@@ -7,10 +7,10 @@ play.create = function () {
   GameObject.prototype.game = this.game
 
   let kek = this.game
-  this.testBox
+  /* Not used.
   let centerScreenX = kek.world.centerX
-  /* Not used
-   let centerScreenY = kek.world.centerY */
+  let centerScreenY = kek.world.centerY
+  */
 
   // Set bounds for world.
   kek.world.setBounds(0, 0, 1920, 1080)
@@ -21,15 +21,12 @@ play.create = function () {
   kek.physics.p2.world.defaultContactMaterial.friction = 0.3
   kek.physics.p2.world.setGlobalStiffness(1e5)
   kek.physics.p2.setImpactEvents(true)
-  let playerCollisionGroup = kek.physics.p2.createCollisionGroup()
-  let boxCollisionGroup = kek.physics.p2.createCollisionGroup()
+
+  // CollisionGroups
+  this.playerCollisionGroup = kek.physics.p2.createCollisionGroup()
+  this.boxCollisionGroup = kek.physics.p2.createCollisionGroup()
 
   kek.physics.p2.updateBoundsCollisionGroup()
-  // Material is what the P2JS physics uses.
-  let worldMaterial = kek.physics.p2.createMaterial('worldMaterial')
-  let boxMaterial = kek.physics.p2.createMaterial('worldMaterial')
-  // Create world borders with the worldMaterial.
-  kek.physics.p2.setWorldMaterial(worldMaterial, true, true, true, true)
 
   // Make immovable boxes.
   this.boxesGroup = this.add.group()
@@ -39,8 +36,8 @@ play.create = function () {
     let box = this.boxesGroup.create(kek.world.randomX, kek.world.randomY, 'box')
     box.body.setRectangle(250, 250)
     // box.body.static = true
-    box.body.setCollisionGroup(boxCollisionGroup)
-    box.body.collides([boxCollisionGroup, playerCollisionGroup])
+    box.body.setCollisionGroup(this.boxCollisionGroup)
+    box.body.collides([this.boxCollisionGroup, this.playerCollisionGroup])
   }
 
   // Make the player.
@@ -50,7 +47,7 @@ play.create = function () {
   this.player.sprite.anchor.setTo(0.5)
   this.player.sprite.body.fixedRotation = true
   this.player.sprite.body.damping = 0.5
-  this.player.sprite.body.setCollisionGroup(playerCollisionGroup)
+  this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup)
 
   // Camera follow player sprite.
   kek.camera.follow(this.player.sprite)
@@ -58,7 +55,7 @@ play.create = function () {
   console.dir(this.player)
 
   // Collision, null is callback on collision.
-  this.player.sprite.body.collides(boxCollisionGroup, null, this)
+  this.player.sprite.body.collides(this.boxCollisionGroup, null, this)
 }
 
 // Think of this function as an endless loop.
