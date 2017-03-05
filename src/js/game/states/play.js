@@ -1,5 +1,6 @@
 let Character = require('../objs/character')
 let GameObject = require('../objs/gameobject')
+let Item = require('../objs/item')
 let play = {}
 
 play.create = function () {
@@ -25,6 +26,7 @@ play.create = function () {
   // CollisionGroups
   this.playerCollisionGroup = kek.physics.p2.createCollisionGroup()
   this.boxCollisionGroup = kek.physics.p2.createCollisionGroup()
+  this.itemCollisionGroup = kek.physics.p2.createCollisionGroup()
 
   kek.physics.p2.updateBoundsCollisionGroup()
 
@@ -32,13 +34,28 @@ play.create = function () {
   this.boxesGroup = this.add.group()
   this.boxesGroup.enableBody = true
   this.boxesGroup.physicsBodyType = Phaser.Physics.P2JS
-  for (let i = 1; i < 4; i++) {
+  for (let i = 0; i < 3; i++) {
     let box = this.boxesGroup.create(kek.world.randomX, kek.world.randomY, 'box')
     box.body.setRectangle(250, 250)
     // box.body.static = true
     box.body.setCollisionGroup(this.boxCollisionGroup)
-    box.body.collides([this.boxCollisionGroup, this.playerCollisionGroup])
+    box.body.collides([this.boxCollisionGroup, this.playerCollisionGroup, this.itemCollisionGroup])
   }
+
+  // Make items
+  this.itemsGroup = this.add.group()
+  this.itemsGroup.enableBody = true
+  this.itemsGroup.physicsBodyType = Phaser.Physics.P2JS
+  this.items = []
+  for (let i = 0; i < 5; ++i) {
+    let pillSprite = this.itemsGroup.create(kek.world.randomX, kek.world.randomY, 'pill')
+    let pill = new Item(pillSprite, 0, 10)
+    pill.sprite.body.setCollisionGroup(this.itemCollisionGroup)
+    pill.sprite.body.collides([this.boxCollisionGroup, this.playerCollisionGroup])
+    this.items.push(pill)
+  }
+  console.log(this.items[0].statistics.damage.value.currentValue)
+  console.log(this.items[0].statistics.health.value.currentValue)
 
   // Make the player.
   this.player = new Character(kek.add.sprite(0, 0, 'box')) // note the new constructor
@@ -48,6 +65,7 @@ play.create = function () {
   this.player.sprite.body.fixedRotation = true
   this.player.sprite.body.damping = 0.5
   this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup)
+  this.player.sprite.body.createGroupCallback(this.itemCollisionGroup, function () { })
 
   // Camera follow player sprite.
   kek.camera.follow(this.player.sprite)
@@ -56,6 +74,14 @@ play.create = function () {
 
   // Collision, null is callback on collision.
   this.player.sprite.body.collides(this.boxCollisionGroup, null, this)
+  this.player.sprite.body.collides(this.itemCollisionGroup, function (body1, body2) {
+    for (let item of this.items) {
+      if (item.sprite.body === body2) {
+        item.onPickup(this.player)
+        this.items.splice(this.items.indexOf(item), 1)
+      }
+    }
+  }, {player: this.player, items: this.items})
 }
 
 // Think of this function as an endless loop.
@@ -76,6 +102,7 @@ play.render = function () {
   kek.debug.text(`left.isDown: ${this.player.controller.left.isDown} - ${this.player.sprite.body.velocity.x}`, 100, 16)
   kek.debug.text(`right.isDown: ${this.player.controller.right.isDown}`, 100, 32)
   kek.debug.text(`up.isDown: ${this.player.controller.up.isDown} - ${this.player.sprite.body.velocity.y}`, 100, 48)
+  kek.debug.text(`HEALTH: ${this.player.statistics.health.value.currentValue}`, 100, 64)
   kek.debug.body(this.player.sprite.body)
 }
 
