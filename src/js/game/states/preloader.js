@@ -5,6 +5,7 @@ preloader.preload = function () {
   this.game.load.image('box', './images/box_250x250.png')
   this.game.load.image('pill', './images/redpill_test_sprite.png')
   this.game.load.image('platform', './images/platform_unit_8.png')
+  this.game.load.image('character', './images/test_character.png')
 }
 
 preloader.create = function () {

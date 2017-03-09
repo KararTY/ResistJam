@@ -67,10 +67,8 @@ play.create = function () {
   this.platform.sprite.body.collides([this.boxCollisionGroup, this.itemCollisionGroup, this.playerCollisionGroup])
 
   // Make the player.
-  this.player = new Character(kek.add.sprite(0, 0, 'box')) // note the new constructor
+  this.player = new Character(kek.add.sprite(0, 0, 'character')) // note the new constructor
   kek.physics.p2.enable(this.player.sprite, false)
-  this.player.sprite.body.setRectangle(250, 250)
-  this.player.sprite.anchor.setTo(0.5)
   this.player.sprite.body.fixedRotation = true
   this.player.sprite.body.damping = 0.5
   this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup)
