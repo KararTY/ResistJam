@@ -2,11 +2,14 @@ var Actor = require('./actor')
 
 var Platform = function (sprite, up, left, down, right) {
   this.sprite = sprite || null
-  this.body = sprite.body || null
   this.up = up || 0
   this.left = left || 0
   this.down = down || 0
   this.right = right || 0
+  if (this.sprite !== null) {
+    this.game.physics.p2.enable(this.sprite)
+    this.sprite.body.kinematic = true
+  }
 
   this.handleBounds = function () {
     if (this.sprite.y <= this.up || this.sprite.y >= this.down) {

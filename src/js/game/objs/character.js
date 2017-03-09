@@ -12,6 +12,11 @@ var Character = function (sprite, controller) {
   this.sprite = sprite || null
   this.controller = controller || new Controller()
   this.lastDirection = 0
+  if (this.sprite !== null) {
+    this.game.physics.p2.enable(this.sprite)
+    this.sprite.body.fixedRotation = true
+    this.sprite.body.damping = 0.5
+  }
 
   this.canJump = function () {
     var yAxis = p2.vec2.fromValues(0, 1)
