@@ -12,12 +12,12 @@ var Character = function (sprite, controller) {
   this.controller = controller || new Controller()
 
   this.canJump = function () {
-    return this.sprite.deltaY <= 0.01 && this.sprite.deltaY >= -0.01
+    return this.sprite.deltaY <= 0.1 && this.sprite.deltaY >= -0.1
   }
 
   this.jump = function () {
     if (this.canJump()) {
-      this.sprite.body.moveUp(900)
+      this.sprite.body.moveUp(1200)
     }
   }
 
@@ -39,7 +39,7 @@ var Character = function (sprite, controller) {
     } else if (this.controller.shoot.isDown) {
       // console.log('shoot')
     } else if (this.canJump()) {
-      this.sprite.body.setZeroVelocity()
+      // this.sprite.body.setZeroVelocity()
     }
   }
 }

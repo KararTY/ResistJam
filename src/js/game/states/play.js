@@ -1,6 +1,7 @@
 let Character = require('../objs/character')
 let GameObject = require('../objs/gameobject')
 let Item = require('../objs/item')
+let Platform = require('../objs/platform')
 let play = {}
 
 play.create = function () {
@@ -19,7 +20,7 @@ play.create = function () {
   // Start up the physics system
   kek.physics.startSystem(Phaser.Physics.P2JS)
   kek.physics.p2.gravity.y = 1000
-  kek.physics.p2.world.defaultContactMaterial.friction = 0.3
+  kek.physics.p2.world.defaultContactMaterial.friction = 1
   kek.physics.p2.world.setGlobalStiffness(1e5)
   kek.physics.p2.setImpactEvents(true)
 
@@ -29,6 +30,7 @@ play.create = function () {
   this.itemCollisionGroup = kek.physics.p2.createCollisionGroup()
 
   kek.physics.p2.updateBoundsCollisionGroup()
+
 
   // Make immovable boxes.
   this.boxesGroup = this.add.group()
@@ -57,6 +59,13 @@ play.create = function () {
   console.log(this.items[0].statistics.damage.value.currentValue)
   console.log(this.items[0].statistics.health.value.currentValue)
 
+  this.platform = new Platform(kek.add.sprite(200, kek.world.centerY, 'platform'), 0, 128, 0, kek.world.centerX)
+  kek.physics.p2.enable(this.platform.sprite)
+  this.platform.sprite.body.velocity.x = 100
+  this.platform.sprite.body.kinematic = true
+  this.platform.sprite.body.setCollisionGroup(this.boxCollisionGroup)
+  this.platform.sprite.body.collides([this.boxCollisionGroup, this.itemCollisionGroup, this.playerCollisionGroup])
+
   // Make the player.
   this.player = new Character(kek.add.sprite(0, 0, 'box')) // note the new constructor
   kek.physics.p2.enable(this.player.sprite, false)
@@ -66,6 +75,16 @@ play.create = function () {
   this.player.sprite.body.damping = 0.5
   this.player.sprite.body.setCollisionGroup(this.playerCollisionGroup)
   this.player.sprite.body.createGroupCallback(this.itemCollisionGroup, function () { })
+
+  // Create player contact materials
+  this.platformMaterial = kek.physics.p2.createMaterial('platformMaterial', this.platform.sprite.body)
+  this.playerMaterial = kek.physics.p2.createMaterial('spriteMaterial', this.player.sprite.body)
+
+  this.CM = kek.physics.p2.createContactMaterial(this.playerMaterial, this.platformMaterial, {
+  })
+  console.log(this.CM)
+  console.log(this.playerMaterial)
+  console.log(this.platformMaterial)
 
   // Camera follow player sprite.
   kek.camera.follow(this.player.sprite)
@@ -88,6 +107,7 @@ play.create = function () {
 play.update = function () {
   // Handle Input
   this.player.handleControllerInput()
+  this.platform.handleBounds()
   // Otherwise idle character
   if (this.player.previousPosition === this.player.position) {
     this.player.sprite.animations.stop()
