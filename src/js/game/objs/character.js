@@ -12,7 +12,20 @@ var Character = function (sprite, controller) {
   this.controller = controller || new Controller()
 
   this.canJump = function () {
-    return this.sprite.deltaY <= 0.1 && this.sprite.deltaY >= -0.1
+    var yAxis = p2.vec2.fromValues(0, 1)
+    var result = false
+    for (var i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; ++i) {
+      var c = this.game.physics.p2.world.narrowphase.contactEquations[i]
+      if (c.bodyA === this.sprite.body.data || c.bodyB === this.sprite.body.data) {
+        var d = p2.vec2.dot(c.normalA, yAxis)
+        if (c.bodyA === this.sprite.body.data) {
+          d *= -1;
+        } if (d > 0.5) {
+          result = true
+        }
+      }
+    }
+    return result
   }
 
   this.jump = function () {

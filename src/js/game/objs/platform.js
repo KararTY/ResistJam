@@ -9,10 +9,10 @@ var Platform = function (sprite, up, left, down, right) {
   this.right = right || 0
 
   this.handleBounds = function () {
-    if (this.sprite.y >= this.up || this.sprite.y <= this.down) {
+    if (this.sprite.y <= this.up || this.sprite.y >= this.down) {
       this.sprite.body.velocity.y = this.sprite.body.velocity.y * -1
     }
-    if (this.sprite.x >= this.right || this.sprite.x <= this.left){
+    if (this.sprite.x >= this.right || this.sprite.x <= this.left) {
       this.sprite.body.velocity.x = this.sprite.body.velocity.x * -1
     }
   }

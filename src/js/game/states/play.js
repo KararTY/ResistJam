@@ -59,9 +59,9 @@ play.create = function () {
   console.log(this.items[0].statistics.damage.value.currentValue)
   console.log(this.items[0].statistics.health.value.currentValue)
 
-  this.platform = new Platform(kek.add.sprite(200, kek.world.centerY, 'platform'), 0, 128, 0, kek.world.centerX)
+  this.platform = new Platform(kek.add.sprite(200, 1080, 'platform'), 0, 0, 1080, 0)
   kek.physics.p2.enable(this.platform.sprite)
-  this.platform.sprite.body.velocity.x = 100
+  this.platform.sprite.body.velocity.y = 100
   this.platform.sprite.body.kinematic = true
   this.platform.sprite.body.setCollisionGroup(this.boxCollisionGroup)
   this.platform.sprite.body.collides([this.boxCollisionGroup, this.itemCollisionGroup, this.playerCollisionGroup])
