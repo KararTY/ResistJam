@@ -26,7 +26,7 @@ var Character = function (sprite, controller) {
       if (c.bodyA === this.sprite.body.data || c.bodyB === this.sprite.body.data) {
         var d = p2.vec2.dot(c.normalA, yAxis)
         if (c.bodyA === this.sprite.body.data) {
-          d *= -1;
+          d *= -1
         } if (d > 0.5) {
           result = true
         }
@@ -42,22 +42,31 @@ var Character = function (sprite, controller) {
   }
 
   this.createBullet = function (direction) {
-    var bullet
+    var bullet = null
     var sprite = this.game.add.sprite(this.sprite.x + (this.sprite.width + 25) * direction, this.sprite.y, 'pill')
     bullet = new Item(sprite, 0, 10)
     bullet.sprite.autoCull = true
     bullet.sprite.outOfCameraBoundsKill = true
     this.game.physics.p2.enable(bullet.sprite)
     bullet.sprite.body.kinematic = true
+    bullet.sprite.body.setCollisionGroup(this.game.collisionGroups.playerBulletGroup)
+    bullet.sprite.body.collides([
+      this.game.collisionGroups.terrainGroup,
+      this.game.collisionGroups.enemyGroup
+    ])
+    bullet.sprite.body.createGroupCallback(this.game.collisionGroups.enemyGroup, function () {
+      bullet.onPickup(this.enemy)
+    }, this.game.state.getCurrentState())
     return bullet
   }
 
   this.shoot = function () {
+    var bullet = null
     if (this.lastDirection === 1) {
-      var bullet = this.createBullet(1)
+      bullet = this.createBullet(1)
       bullet.sprite.body.velocity.x = 600
     } else if (this.lastDirection === 0) {
-      var bullet = this.createBullet(-1)
+      bullet = this.createBullet(-1)
       bullet.sprite.body.velocity.x = -600
     }
   }
@@ -81,7 +90,7 @@ var Character = function (sprite, controller) {
       // console.log('jump')
     } else if (this.controller.shoot.isDown && this.controller.shoot.duration === 0) {
       this.shoot()
-      console.log('shoot')
+      // console.log('shoot')
     } else if (this.canJump()) {
       // this.sprite.body.setZeroVelocity()
     }

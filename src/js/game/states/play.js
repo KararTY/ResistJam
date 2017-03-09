@@ -84,14 +84,13 @@ play.update = function () {
 
 // Render is mostly used for debugging, also an endless loop. THIS IS HTML!
 play.render = function () {
-  let kek = this.game
-
   // Debug text
-  kek.debug.text(`left.isDown: ${this.player.controller.left.isDown} - ${this.player.sprite.body.velocity.x}`, 100, 16)
-  kek.debug.text(`right.isDown: ${this.player.controller.right.isDown}`, 100, 32)
-  kek.debug.text(`up.isDown: ${this.player.controller.up.isDown} - ${this.player.sprite.body.velocity.y}`, 100, 48)
-  kek.debug.text(`HEALTH: ${this.player.statistics.health.value.currentValue}`, 100, 64)
-  kek.debug.body(this.player.sprite.body)
+  this.game.debug.text(`left.isDown: ${this.player.controller.left.isDown} - ${this.player.sprite.body.velocity.x}`, 100, 16)
+  this.game.debug.text(`right.isDown: ${this.player.controller.right.isDown}`, 100, 32)
+  this.game.debug.text(`up.isDown: ${this.player.controller.up.isDown} - ${this.player.sprite.body.velocity.y}`, 100, 48)
+  this.game.debug.text(`HEALTH: ${this.player.statistics.health.value.currentValue}`, 100, 80)
+  this.game.debug.text(`ENEMY HEALTH: ${this.enemy.statistics.health.value.currentValue}`, 100, 96)
+  this.game.debug.body(this.player.sprite.body)
 }
 
 module.exports = play
