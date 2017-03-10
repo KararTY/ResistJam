@@ -35,8 +35,8 @@ var Controller = function (binding) {
       left: Phaser.KeyCode.A,
       down: Phaser.KeyCode.S,
       right: Phaser.KeyCode.D,
-      jump: Phaser.KeyCode.SPACEBAR,
-      shoot: Phaser.KeyCode.F
+      jump: Phaser.KeyCode.SHIFT,
+      shoot: Phaser.KeyCode.SPACEBAR
     })
     // keys.shoot = this.game.input.activePointer.leftButton
     return keys

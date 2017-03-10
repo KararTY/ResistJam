@@ -88,11 +88,12 @@ var Character = function (sprite, controller) {
     } else if (this.controller.jump.isDown && this.controller.jump.duration === 0) {
       this.jump()
       // console.log('jump')
-    } else if (this.controller.shoot.isDown && this.controller.shoot.duration === 0) {
-      this.shoot()
-      // console.log('shoot')
     } else if (this.canJump()) {
       // this.sprite.body.setZeroVelocity()
+    }
+    if (this.controller.shoot.isDown && this.controller.shoot.duration === 0) {
+      this.shoot()
+      // console.log('shoot')
     }
   }
 }
