@@ -12,7 +12,7 @@ play.create = function () {
   this.game.objectGroups = {}
   this.game.world.setBounds(0, 0, 1920, 1080)
 
-  // Start Physics 
+  // Start Physics
   this.game.physics.startSystem(Phaser.Physics.P2JS)
   this.game.physics.p2.gravity.y = 1000
   this.game.physics.p2.world.defaultContactMaterial.friction = 1

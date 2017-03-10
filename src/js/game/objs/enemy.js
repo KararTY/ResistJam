@@ -57,11 +57,14 @@ var Enemy = function (sprite, logic) {
 
   this.defaultLogic = function (player) {
     if (this.sprite.x > player.sprite.x + 300) {
-      this.lastDirection = 0
       this.sprite.body.velocity.x = -150
     } else if (this.sprite.x < player.sprite.x - 300) {
-      this.lastDirection = 1
       this.sprite.body.velocity.x = 150
+    }
+    if (this.sprite.x > player.sprite.x) {
+      this.lastDirection = 0
+    } else if (this.sprite.x < player.sprite.x){
+      this.lastDirection = 1
     }
     if (this.sprite.y + 5 >= player.sprite.y && this.sprite.y - 5 <= player.sprite.y) {
       if (this.canShoot) {
