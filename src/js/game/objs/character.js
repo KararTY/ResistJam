@@ -60,8 +60,12 @@ var Character = function (sprite, controller) {
       this.game.collisionGroups.terrainGroup,
       this.game.collisionGroups.enemyGroup
     ])
-    bullet.sprite.body.createGroupCallback(this.game.collisionGroups.enemyGroup, function () {
-      bullet.onPickup(this.enemy)
+    bullet.sprite.body.createGroupCallback(this.game.collisionGroups.enemyGroup, function (body1, body2) {
+      for (let enemy of this.enemies) {
+        if (enemy.sprite.body !== null && enemy.sprite.body.id === body2.id) {
+          bullet.onPickup(enemy)
+        }
+      }
     }, this.game.state.getCurrentState())
     return bullet
   }

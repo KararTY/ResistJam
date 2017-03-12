@@ -57,20 +57,27 @@ play2.create = function () {
   // Debug
   console.dir(this.player)
 
-  let randomNumber = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
 
   // Enemies
-  this.enemy = new Enemy(this.game.add.sprite(randomNumber(0, 1920), randomNumber(0, 1080), 'enemy'))
-  this.enemy.sprite.body.setCollisionGroup(this.game.collisionGroups.enemyGroup)
-  this.enemy.sprite.body.collides([
-    this.game.collisionGroups.terrainGroup,
-    this.game.collisionGroups.playerGroup,
-    this.game.collisionGroups.playerBulletGroup
-  ])
-  this.game.sounds.bgm.loopFull()
-  console.log(this.enemy)
+  this.enemies = []
+  for (let i = 0; i < 8; ++i) {
+    this.enemies[i] = new Enemy(this.game.add.sprite(700 + ((i + 1) * 150), 1080 - 64, 'normie'))
+    this.enemies[i].sprite.frame = i % 4
+    if (i % 3 === 0) {
+      this.enemies[i].logic = Enemy.prototype.creepLogic
+    } else if (i % 3 === 1) {
+      this.enemies[i].logic = Enemy.prototype.sentryLogic
+    } else {
+      this.enemies[i].logic = Enemy.prototype.sniperLogic
+    }
+    this.enemies[i].sprite.body.setCollisionGroup(this.game.collisionGroups.enemyGroup)
+    this.enemies[i].sprite.body.collides([
+      this.game.collisionGroups.terrainGroup,
+      this.game.collisionGroups.playerGroup,
+      this.game.collisionGroups.playerBulletGroup,
+      this.game.collisionGroups.enemyGroup
+    ])
+  }
 
   console.log(this.game.world.height - 100, this.game.world.width - 100)
 }
@@ -79,14 +86,22 @@ play2.create = function () {
 play2.update = function () {
   // Handle Input
   this.player.handleControllerInput()
-  if (!this.enemy.destroyed) {
-    this.enemy.handleAction(this.player)
+  for (let i = 0; i < this.enemies.length; ++i) {
+    if (!this.enemies[i].destroyed) {
+      this.enemies[i].handleAction(this.player)
+    } else {
+      this.enemies.splice(i, 1)
+    }
   }
   this.game.healthbar.frame = 6 - this.player.statistics.health.value.currentValue / 10
   this.game.healthbar.bringToTop()
   if (this.player.sprite.body.y >= 1080 - 100 && this.player.sprite.body.x >= 1920 - 50) {
     this.game.sounds.bgm.destroy()
     this.game.state.start('play3')
+  }
+  if (this.player.statistics.health.value.currentValue === 0) {
+    this.game.sounds.bgm.destroy()
+    this.game.state.start('game')
   }
 }
 

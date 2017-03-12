@@ -1,6 +1,7 @@
 var cutscenes = {}
 
 cutscenes.create = function () {
+  /*
   this.vedeo = this.game.add.video('video1')
   this.sprite = this.vedeo.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5, 0.85, 0.85)
   this.vedeo.play()
@@ -12,7 +13,8 @@ cutscenes.create = function () {
     this.videe.onComplete.add(function () {
       this.game.state.start('play')
     }, this)
-  }, this)
+  }, this)*/
+  this.game.state.start('play3')
 }
 
 module.exports = cutscenes

@@ -13,30 +13,31 @@ var Statistic = function (name, max, min, val) {
     _minValue: 0,
     _maxValue: 100,
     _currentValue: 10,
-    get minValue () {
+    get minValue() {
       return this._minValue
     },
-    set minValue (value) {
+    set minValue(value) {
       if (value > this._maxValue) {
         this._minValue = this._maxValue - 1
       } else {
         this._minValue = value
       }
     },
-    get maxValue () {
+    get maxValue() {
       return this._maxValue
     },
-    set maxValue (value) {
+    set maxValue(value) {
       if (value < this._minValue) {
         this._maxValue = this._minValue + 1
       } else {
         this._maxValue = value
       }
     },
-    get currentValue () {
+    get currentValue() {
       return this._currentValue
     },
-    set currentValue (value) {
+    set currentValue(value) {
+      console.log(`INPUT VALUE IS: ${value}`)
       if (value > this._maxValue) {
         this._currentValue = this._maxValue
       } else if (value < this._minValue) {

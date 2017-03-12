@@ -69,13 +69,25 @@ play.create = function () {
   this.elevator2.sprite.body.moveDown(100)
 
   // Enemies
-  this.enemy = new Enemy(this.game.add.sprite(1920, 0, 'enemy'))
-  this.enemy.sprite.body.setCollisionGroup(this.game.collisionGroups.enemyGroup)
-  this.enemy.sprite.body.collides([
-    this.game.collisionGroups.terrainGroup,
-    this.game.collisionGroups.playerGroup,
-    this.game.collisionGroups.playerBulletGroup
-  ])
+  this.enemies = []
+  for (let i = 0; i < 21; ++i) {
+    this.enemies[i] = new Enemy(this.game.add.sprite(100 * (i + 1), 100 * (i % 10), 'normie'))
+    this.enemies[i].sprite.frame = i % 4
+    if (i % 3 === 0) {
+      this.enemies[i].logic = Enemy.prototype.creepLogic
+    } else if (i % 3 === 1) {
+      this.enemies[i].logic = Enemy.prototype.sentryLogic
+    } else {
+      this.enemies[i].logic = Enemy.prototype.sniperLogic
+    }
+    this.enemies[i].sprite.body.setCollisionGroup(this.game.collisionGroups.enemyGroup)
+    this.enemies[i].sprite.body.collides([
+      this.game.collisionGroups.terrainGroup,
+      this.game.collisionGroups.playerGroup,
+      this.game.collisionGroups.playerBulletGroup,
+      this.game.collisionGroups.enemyGroup
+    ])
+  }
   this.game.sounds.bgm.loopFull()
 }
 
@@ -83,8 +95,12 @@ play.create = function () {
 play.update = function () {
   // Handle Input
   this.player.handleControllerInput()
-  if (!this.enemy.destroyed) {
-    this.enemy.handleAction(this.player)
+  for (let i = 0; i < this.enemies.length; ++i) {
+    if (!this.enemies[i].destroyed) {
+      this.enemies[i].handleAction(this.player)
+    } else {
+      this.enemies.splice(i, 1)
+    }
   }
   this.elevator1.handleBounds()
   this.elevator2.handleBounds()
@@ -93,6 +109,10 @@ play.update = function () {
   if (this.player.sprite.body.x <= 200 && this.player.sprite.body.y <= 500) {
     this.game.sounds.bgm.destroy()
     this.game.state.start('play2')
+  }
+  if (this.player.statistics.health.value.currentValue === 0) {
+    this.game.sounds.bgm.destroy()
+    this.game.state.start('game')
   }
 }
 

@@ -1,8 +1,13 @@
 var Actor = require('./actor')
 var Item = require('./item')
+var Statistic = require('./statistic')
 
 var Enemy = function (sprite, logic) {
   this.sprite = sprite || null
+  this.statistics = {
+    health: new Statistic('health', 100, 0, 100),
+    damage: new Statistic('damage', 100, 0, 1)
+  }
   this.lastDirection = 0
   this.canShoot = true
   this.shotTimer = this.game.time.create()
@@ -81,7 +86,7 @@ var Enemy = function (sprite, logic) {
       this.sprite.destroy()
       this.destroyed = true
       var sprite = this.game.add.sprite(this.sprite.x, this.sprite.y, 'health')
-      var pickup = new Item(sprite, 0, 10)
+      var pickup = new Item(sprite, 10, 0)
       this.game.physics.p2.enable(pickup.sprite)
       pickup.sprite.body.kinematic = true
       pickup.sprite.body.setCollisionGroup(this.game.collisionGroups.enemyBulletGroup)
@@ -90,6 +95,7 @@ var Enemy = function (sprite, logic) {
       ])
       pickup.sprite.body.createGroupCallback(this.game.collisionGroups.playerGroup, function () {
         pickup.onPickup(this.player)
+        console.log(`${this.player.statistics.health.value.currentValue}/${this.player.statistics.health.value.maxValue}`)
       }, this.game.state.getCurrentState())
     }
   }
@@ -172,8 +178,6 @@ Enemy.prototype.sniperLogic = function (player) {
   }
   if (player.sprite.x + 300 >= this.sprite.x && player.sprite.x - 300 <= this.sprite.x &&
     player.sprite.y + 100 >= this.sprite.y && player.sprite.y - 100 <= this.sprite.y) {
-    console.log('here')
-
     if (this.sprite.x < player.sprite.x + 300) {
       this.sprite.body.velocity.x = 150
     } else if (this.sprite.x > player.sprite.x - 300) {
