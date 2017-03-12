@@ -16,7 +16,7 @@ play.create = function () {
   this.game.sounds.shoot = this.game.add.sound('shoot', 0.25)
   this.game.sounds.hit = this.game.add.sound('hit', 0.25)
   this.game.sounds.bgm = this.game.add.sound('level1bgm', 0.25)
-  this.game.healthbar = this.game.add.sprite(0, 0, 'healthbar')
+  this.game.healthbar = this.game.add.sprite(5, 5, 'healthbar')
   this.game.healthbar.fixedToCamera = true
   this.game.healthbar.scale.setTo(2, 2)
     // this.game.add.tileSprite(0, 1080, 1920, 1080)
@@ -71,7 +71,7 @@ play.create = function () {
   this.elevator2.sprite.body.moveDown(100)
 
   // Enemies
-  this.enemy = new Enemy(this.game.add.sprite(1920, 0, 'enemy'), 'testLogic')
+  this.enemy = new Enemy(this.game.add.sprite(1920, 0, 'enemy'))
   this.enemy.sprite.body.setCollisionGroup(this.game.collisionGroups.enemyGroup)
   this.enemy.sprite.body.collides([
     this.game.collisionGroups.terrainGroup,

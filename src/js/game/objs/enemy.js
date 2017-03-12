@@ -10,6 +10,7 @@ var Enemy = function (sprite, logic) {
     this.canShoot = true
   }, this)
   this.shotTimer.start()
+  this.statistics.health.value.currentValue = 10
   if (this.sprite !== null) {
     this.game.physics.p2.enable(this.sprite)
     this.sprite.body.fixedRotation = true
@@ -81,23 +82,7 @@ var Enemy = function (sprite, logic) {
     }
   }
 
-  this.defaultLogic = function (player) {
-    if (this.sprite.x > player.sprite.x + 300) {
-      this.sprite.body.velocity.x = -150
-    } else if (this.sprite.x < player.sprite.x - 300) {
-      this.sprite.body.velocity.x = 150
-    }
-    if (this.sprite.x > player.sprite.x) {
-      this.lastDirection = 0
-    } else if (this.sprite.x < player.sprite.x) {
-      this.lastDirection = 1
-    }
-    if (this.sprite.y + 5 >= player.sprite.y && this.sprite.y - 5 <= player.sprite.y) {
-      if (this.canShoot) {
-        this.shoot()
-      }
-    }
-  }
+  this.defaultLogic = this.creepLogic
 
   this.testLogic = function (player) {
     if (this.sprite.x > player.sprite.x + 300) {
@@ -129,5 +114,60 @@ var Enemy = function (sprite, logic) {
   }
 }
 Enemy.prototype = new Actor()
+Enemy.prototype.sentryLogic = function (player) {
+  if (player.sprite.x + 300 >= this.sprite.x && player.sprite.x - 300 <= this.sprite.x &&
+    player.sprite.y + 100 >= this.sprite.y && player.sprite.y - 100 <= this.sprite.y) {
+    if (this.canShoot) {
+      if (this.sprite.x > player.sprite.x) {
+        this.lastDirection = 0
+      } else if (this.sprite.x < player.sprite.x) {
+        this.lastDirection = 1
+      }
+      this.shoot()
+    }
+  }
+}
+Enemy.prototype.creepLogic = function (player) {
+  if (player.sprite.x + 300 >= this.sprite.x && player.sprite.x - 300 <= this.sprite.x &&
+    player.sprite.y + 100 >= this.sprite.y && player.sprite.y - 100 <= this.sprite.y) {
+    if (this.canShoot) {
+      if (this.sprite.x > player.sprite.x) {
+        this.lastDirection = 0
+      } else if (this.sprite.x < player.sprite.x) {
+        this.lastDirection = 1
+      }
+      this.shoot()
+    }
+  } else if (player.sprite.y + 100 >= this.sprite.y && player.sprite.y - 100 <= this.sprite.y) {
+    if (this.sprite.x > player.sprite.x + 300) {
+      this.sprite.body.velocity.x = -150
+    } else if (this.sprite.x < player.sprite.x - 300) {
+      this.sprite.body.velocity.x = 150
+    }
+  }
+}
+Enemy.prototype.sniperLogic = function (player) {
+  if (player.sprite.x + 700 >= this.sprite.x && player.sprite.x - 700 <= this.sprite.x &&
+    player.sprite.y + 100 >= this.sprite.y && player.sprite.y - 100 <= this.sprite.y) {
+    if (this.canShoot) {
+      if (this.sprite.x > player.sprite.x) {
+        this.lastDirection = 0
+      } else if (this.sprite.x < player.sprite.x) {
+        this.lastDirection = 1
+      }
+      this.shoot()
+    }
+  }
+  if (player.sprite.x + 300 >= this.sprite.x && player.sprite.x - 300 <= this.sprite.x &&
+    player.sprite.y + 100 >= this.sprite.y && player.sprite.y - 100 <= this.sprite.y) {
+    console.log('here')
+
+    if (this.sprite.x < player.sprite.x + 300) {
+      this.sprite.body.velocity.x = 150
+    } else if (this.sprite.x > player.sprite.x - 300) {
+      this.sprite.body.velocity.x = -150
+    }
+  }
+}
 
 module.exports = Enemy

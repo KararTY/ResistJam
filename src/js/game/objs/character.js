@@ -81,7 +81,7 @@ var Character = function (sprite, controller) {
   this.handleControllerInput = function () {
     if (this.controller.up.isDown && this.controller.up.duration === 0) {
       this.jump()
-      this.sprite.animations.play('walk')
+      this.sprite.animations.play('walk', null, true)
         // console.log('up')
     } else if (this.controller.left.isDown) {
       this.sprite.body.moveLeft(150)
@@ -97,15 +97,17 @@ var Character = function (sprite, controller) {
         // console.log('right')
     } else if (this.controller.jump.isDown && this.controller.jump.duration === 0) {
       this.jump()
-      this.sprite.animations.play('walk')
+      this.sprite.animations.play('walk', null, true)
         // console.log('jump')
     } else if (this.canJump() && (this.sprite.frame === 0)) {
       this.sprite.animations.play('idle')
     }
     if (this.controller.shoot.isDown && this.controller.shoot.duration === 0) {
       this.shoot()
-      this.sprite.animations.play('shoot')
-        // console.log('shoot')
+      if (this.sprite.animations.currentAnim.name === 'idle') {
+        this.sprite.animations.play('shoot')
+      }
+      // console.log('shoot')
     }
   }
 }
