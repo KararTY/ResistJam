@@ -25,22 +25,27 @@ credits.create = function () {
     {name: 'Thanks for playing and,', twitter: 'PRAISE KEK!'}
   ]
 
-  let creditTextMargin = 25
-  let timer = 5000
+  let creditTextMargin = 40
   for (let i = 0; i < creditsText.length; i++) {
     let element = creditsText[i]
 
-    let groupItem = kek.add.text(kek.world.centerX, kek.world.height + creditTextMargin, '', {font: '1.5rem Bangers-Regular', fill: '#fff'})
+    let groupItem = kek.add.text(kek.world.centerX, kek.world.height + creditTextMargin, '', {font: '2rem Bangers-Regular', fill: '#fff'})
     groupItem.text = `${element.name} ${element.twitter}`
     groupItem.anchor.setTo(0.5, 0.5)
     groupItem.padding.set(10, 16)
 
     kek.add.tween(groupItem).to({y: -kek.world.height + creditTextMargin}, 30000, 'Linear', true)
-    timer += 5000
-    creditTextMargin += 25
+    creditTextMargin += 40
   }
 
-  // kek.add.tween(this.creditTextGroup.x).to(0, 30000, 'Linear', true)
+  let textReturn = kek.add.text(50, kek.world.height - 20, '', {font: '1.5rem Bangers-Regular', fill: '#fff'})
+  textReturn.text = 'Return'
+  textReturn.anchor.setTo(0.5, 0.5)
+  textReturn.padding.set(10, 16)
+  textReturn.inputEnabled = true
+  textReturn.events.onInputDown.add(function () {
+    kek.state.start('game')
+  }, this)
 }
 
 module.exports = credits
