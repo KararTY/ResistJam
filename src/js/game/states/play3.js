@@ -85,6 +85,7 @@ play3.update = function () {
   this.game.healthbar.frame = 6 - this.player.statistics.health.value.currentValue / 10
   this.game.healthbar.bringToTop()
   if (this.player.sprite.body.y >= 1080 - 100 && this.player.sprite.body.x >= 1920 - 50) {
+    this.game.world.setBounds(0, 0, this.game.width, this.game.height)
     this.game.sounds.bgm.destroy()
     this.game.state.start('credits')
   }
