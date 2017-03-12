@@ -73,7 +73,8 @@ play3.create = function () {
   this.boss.sprite.animations.add(this.boss.sprite.animations.add('teleport', [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
   ], 12, false))
-  this.boss.statistics.health.value.currentValue = 60
+  this.boss.statistics.health.value.maxValue = 200
+  this.boss.statistics.health.value.currentValue = 200
   this.boss.canTeleport = true
   this.boss.teleportTimer = this.game.time.create()
   this.boss.teleportTimer.loop(2000, function () {
