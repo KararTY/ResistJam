@@ -16,6 +16,10 @@ var Character = function (sprite, controller) {
     this.game.physics.p2.enable(this.sprite)
     this.sprite.body.fixedRotation = true
     this.sprite.body.damping = 0.5
+    this.sprite.animations.add('walk', [1, 2, 3, 4, 5, 6], 12, false)
+    this.sprite.animations.add('idle', [0], 12, false)
+    this.sprite.animations.add('shoot', [7, 8, 9, 10, 0], 12, false)
+    console.log(this.sprite.animations)
   }
 
   this.canJump = function () {
@@ -27,7 +31,8 @@ var Character = function (sprite, controller) {
         var d = p2.vec2.dot(c.normalA, yAxis)
         if (c.bodyA === this.sprite.body.data) {
           d *= -1
-        } if (d > 0.5) {
+        }
+        if (d > 0.5) {
           result = true
         }
       }
@@ -74,25 +79,36 @@ var Character = function (sprite, controller) {
   this.handleControllerInput = function () {
     if (this.controller.up.isDown && this.controller.up.duration === 0) {
       this.jump()
-      // console.log('up')
+      this.sprite.animations.play('walk')
+        // console.log('up')
     } else if (this.controller.left.isDown) {
       this.sprite.body.moveLeft(150)
       this.lastDirection = 0
-      // console.log('left')
+      this.sprite.scale.x = -1
+      this.sprite.animations.play('walk')
+        // console.log('left')
     } else if (this.controller.down.isDown) {
       // console.log('down')
     } else if (this.controller.right.isDown) {
       this.sprite.body.moveRight(150)
       this.lastDirection = 1
-      // console.log('right')
+      this.sprite.scale.x = 1
+      this.sprite.animations.play('walk')
+        // console.log('right')
     } else if (this.controller.jump.isDown && this.controller.jump.duration === 0) {
       this.jump()
-      // console.log('jump')
-    } else if (this.canJump()) {
-      // this.sprite.body.setZeroVelocity()
+      this.sprite.animations.play('walk')
+        // console.log('jump')
+    } else if (this.canJump() && this.sprite.animations.currentAnim.name !== 'shoot') {
+      this.sprite.animations.play('idle')
     }
     if (this.controller.shoot.isDown && this.controller.shoot.duration === 0) {
       this.shoot()
+      if (this.sprite.animations.currentAnim.name === 'idle') {
+        this.sprite.animations.play('shoot')
+      } else if (this.sprite.animations.currentAnim.frame === 0) {
+        this.sprite.animations.play('idle')
+      }
       // console.log('shoot')
     }
   }
