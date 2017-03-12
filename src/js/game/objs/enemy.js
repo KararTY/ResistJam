@@ -11,7 +11,7 @@ var Enemy = function (sprite, logic, time) {
   this.lastDirection = 0
   this.canShoot = true
   this.shotTimer = this.game.time.create()
-  this.shotTime = time || 750
+  this.shotTime = time || 1250
   this.shotTimer.loop(this.shotTime, function () {
     this.canShoot = true
   }, this)

@@ -30,6 +30,7 @@ preloader.preload = function () {
 }
 
 preloader.create = function () {
+  this.game.introPlayed = false
   this.game.state.start('game')
 }
 
