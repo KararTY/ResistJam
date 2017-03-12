@@ -11,10 +11,12 @@ play.create = function () {
   this.game.collisionGroups = {}
   this.game.objectGroups = {}
   this.game.world.setBounds(0, 0, 1920, 1080)
+  // this.game.world.scale.set(1.45) <--- Scale world, gotta figure out a good way.
 
   // Start Physics
   this.game.physics.startSystem(Phaser.Physics.P2JS)
   this.game.physics.p2.gravity.y = 1000
+  this.game.physics.p2.restitution = 0
   this.game.physics.p2.world.defaultContactMaterial.friction = 1
   this.game.physics.p2.world.setGlobalStiffness(1e5)
   this.game.physics.p2.setImpactEvents(true)
@@ -30,7 +32,7 @@ play.create = function () {
   this.physics.p2.updateBoundsCollisionGroup()
 
   // Make the player.
-  this.player = new Character(this.game.add.sprite(0, 0, 'character')) // note the new constructor
+  this.player = new Character(this.game.add.sprite(0, 0, 'pepe')) // note the new constructor
   this.player.sprite.body.setCollisionGroup(this.game.collisionGroups.playerGroup)
   this.player.sprite.body.collides([
     this.game.collisionGroups.terrainGroup,
@@ -39,7 +41,7 @@ play.create = function () {
   ])
 
   // Camera follow player sprite.
-  this.game.camera.follow(this.player.sprite)
+  this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER)
 
   // Debug
   console.dir(this.player)
@@ -54,24 +56,25 @@ play.create = function () {
   this.platform.sprite.body.velocity.y = 100
 
   // Enemies
-  this.enemy = new Enemy(this.game.add.sprite(1920, 0, 'enemy'))
+  this.enemy = new Enemy(this.game.add.sprite(1920, 0, 'enemy'), 'testLogic')
   this.enemy.sprite.body.setCollisionGroup(this.game.collisionGroups.enemyGroup)
   this.enemy.sprite.body.collides([
     this.game.collisionGroups.terrainGroup,
     this.game.collisionGroups.playerGroup,
     this.game.collisionGroups.playerBulletGroup
   ])
-  console.log(this.enemy)
 
   // Collision, null is callback on collision.
-/*  this.player.sprite.body.collides(null, function (body1, body2) {
+  /*
+  this.player.sprite.body.collides(null, function (body1, body2) {
     for (let item of this.items) {
       if (item.sprite.body === body2) {
         item.onPickup(this.player)
         this.items.splice(this.items.indexOf(item), 1)
       }
     }
-  }, {player: this.player, items: this.items})*/
+  }, {player: this.player, items: this.items})
+  */
 }
 
 // Think of this function as an endless loop.

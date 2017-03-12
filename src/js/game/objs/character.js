@@ -37,7 +37,7 @@ var Character = function (sprite, controller) {
 
   this.jump = function () {
     if (this.canJump()) {
-      this.sprite.body.moveUp(1200)
+      this.sprite.body.moveUp(700)
     }
   }
 

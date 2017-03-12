@@ -54,7 +54,7 @@ game.create = function () {
   // Create copyright text.
   let copyText = kek.add.text(centerScreenX, window.innerHeight, '', {font: '2rem Bangers-Regular', fill: '#fff'})
   copyText.anchor.setTo(0.5, 1)
-  copyText.text = 'Copyrighted 2017 Team Kekistan'
+  copyText.text = '2017 Team Kekistan'
   copyText.padding.set(10, 0)
 }
 

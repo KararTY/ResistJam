@@ -6,13 +6,14 @@ var Enemy = function (sprite, logic) {
   this.lastDirection = 0
   this.canShoot = true
   this.shotTimer = this.game.time.create()
-  this.shotTimer.loop(500, function () {
+  this.shotTimer.loop(750, function () {
     this.canShoot = true
   }, this)
   this.shotTimer.start()
   if (this.sprite !== null) {
     this.game.physics.p2.enable(this.sprite)
     this.sprite.body.fixedRotation = true
+    this.sprite.body.immovable = true
     this.sprite.body.damping = 0.5
   }
 
@@ -47,6 +48,29 @@ var Enemy = function (sprite, logic) {
     this.canShoot = false
   }
 
+  this.canJump = function () {
+    var yAxis = p2.vec2.fromValues(0, 1)
+    var result = false
+    for (var i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; ++i) {
+      var c = this.game.physics.p2.world.narrowphase.contactEquations[i]
+      if (c.bodyA === this.sprite.body.data || c.bodyB === this.sprite.body.data) {
+        var d = p2.vec2.dot(c.normalA, yAxis)
+        if (c.bodyA === this.sprite.body.data) {
+          d *= -1
+        } if (d > 0.5) {
+          result = true
+        }
+      }
+    }
+    return result
+  }
+
+  this.jump = function () {
+    if (this.canJump()) {
+      this.sprite.body.moveUp(700)
+    }
+  }
+
   this.handleAction = function (player) {
     if (this.statistics.health.value.currentValue > 0) {
       this.logic(player)
@@ -63,7 +87,25 @@ var Enemy = function (sprite, logic) {
     }
     if (this.sprite.x > player.sprite.x) {
       this.lastDirection = 0
-    } else if (this.sprite.x < player.sprite.x){
+    } else if (this.sprite.x < player.sprite.x) {
+      this.lastDirection = 1
+    }
+    if (this.sprite.y + 5 >= player.sprite.y && this.sprite.y - 5 <= player.sprite.y) {
+      if (this.canShoot) {
+        this.shoot()
+      }
+    }
+  }
+
+  this.testLogic = function (player) {
+    if (this.sprite.x > player.sprite.x + 300) {
+      this.sprite.body.velocity.x = -150
+    } else if (this.sprite.x < player.sprite.x - 300) {
+      this.sprite.body.velocity.x = 150
+    }
+    if (this.sprite.x > player.sprite.x) {
+      this.lastDirection = 0
+    } else if (this.sprite.x < player.sprite.x) {
       this.lastDirection = 1
     }
     if (this.sprite.y + 5 >= player.sprite.y && this.sprite.y - 5 <= player.sprite.y) {
@@ -74,8 +116,12 @@ var Enemy = function (sprite, logic) {
   }
 
   if (logic !== null && logic !== undefined) {
-    console.log(logic)
-    this.logic = logic
+    if (logic === 'testLogic') {
+      this.logic = this.testLogic
+    } else {
+      console.log(logic)
+      this.logic = logic
+    }
   } else {
     this.logic = this.defaultLogic
   }
