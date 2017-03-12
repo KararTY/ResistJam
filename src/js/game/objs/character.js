@@ -11,7 +11,7 @@ var Item = require('./item')
 var Character = function (sprite, controller) {
   this.sprite = sprite || null
   this.controller = controller || new Controller()
-  this.lastDirection = -1
+  this.lastDirection = 1
   if (this.sprite !== null) {
     this.game.physics.p2.enable(this.sprite)
     this.sprite.body.fixedRotation = true
@@ -73,6 +73,7 @@ var Character = function (sprite, controller) {
       bullet = this.createBullet(-1)
       bullet.sprite.body.velocity.x = -600
     }
+    this.game.sounds.shoot.play()
   }
 
   this.handleControllerInput = function () {

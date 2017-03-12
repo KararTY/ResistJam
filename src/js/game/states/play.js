@@ -13,6 +13,10 @@ play.create = function () {
   this.game.objectGroups = {}
   this.game.world.setBounds(0, 0, 1920, 1080)
   this.game.add.tileSprite(0, 0, 1920, 1080, 'background')
+  this.game.sounds = {}
+  this.game.sounds.shoot = this.game.add.sound('shoot', 0.25)
+  this.game.sounds.hit = this.game.add.sound('hit', 0.25)
+  this.game.sounds.bgm = this.game.add.sound('level1bgm', 0.25)
     // this.game.add.tileSprite(0, 1080, 1920, 1080)
     // this.game.world.scale.set(1.45) <--- Scale world, gotta figure out a good way.
 
@@ -84,6 +88,7 @@ play.create = function () {
     }
   }, {player: this.player, items: this.items})
   */
+  this.game.sounds.bgm.loopFull()
 }
 
 // Think of this function as an endless loop.

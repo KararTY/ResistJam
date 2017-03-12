@@ -46,6 +46,7 @@ var Enemy = function (sprite, logic) {
       bullet.sprite.body.velocity.x = -600
     }
     this.canShoot = false
+    this.game.sounds.shoot.play()
   }
 
   this.canJump = function () {
@@ -57,7 +58,8 @@ var Enemy = function (sprite, logic) {
         var d = p2.vec2.dot(c.normalA, yAxis)
         if (c.bodyA === this.sprite.body.data) {
           d *= -1
-        } if (d > 0.5) {
+        }
+        if (d > 0.5) {
           result = true
         }
       }
