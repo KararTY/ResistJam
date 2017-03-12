@@ -86,8 +86,6 @@ var Character = function (sprite, controller) {
       this.sprite.scale.x = -1
       this.sprite.animations.play('walk')
         // console.log('left')
-    } else if (this.controller.down.isDown) {
-      // console.log('down')
     } else if (this.controller.right.isDown) {
       this.sprite.body.moveRight(150)
       this.lastDirection = 1

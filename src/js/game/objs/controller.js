@@ -14,7 +14,6 @@ var Controller = function (binding) {
     if (binding) {
       this.up = binding.up
       this.left = binding.left
-      this.down = binding.down
       this.right = binding.right
       this.jump = binding.jump
       this.shoot = binding.shoot
@@ -22,7 +21,6 @@ var Controller = function (binding) {
     return {
       up: this.up,
       left: this.left,
-      down: this.down,
       right: this.right,
       jump: this.jump,
       shoot: this.shoot
@@ -31,14 +29,13 @@ var Controller = function (binding) {
 
   this.getDefaultBinding = function () {
     let keys = this.game.input.keyboard.addKeys({
-      up: Phaser.KeyCode.W,
-      left: Phaser.KeyCode.A,
-      down: Phaser.KeyCode.S,
-      right: Phaser.KeyCode.D,
-      jump: Phaser.KeyCode.SHIFT,
-      shoot: Phaser.KeyCode.SPACEBAR
-    })
-    // keys.shoot = this.game.input.activePointer.leftButton
+        up: Phaser.KeyCode.W,
+        left: Phaser.KeyCode.A,
+        right: Phaser.KeyCode.D,
+        jump: Phaser.KeyCode.SHIFT,
+        shoot: Phaser.KeyCode.SPACEBAR
+      })
+      // keys.shoot = this.game.input.activePointer.leftButton
     return keys
   }
 
