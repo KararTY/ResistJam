@@ -9,14 +9,20 @@ var Platform = function (sprite, up, left, down, right) {
   if (this.sprite !== null) {
     this.game.physics.p2.enable(this.sprite)
     this.sprite.body.kinematic = true
+    this.sprite.body.setCollisionGroup(this.game.collisionGroups.terrainGroup)
+    this.sprite.body.collides([
+      this.game.collisionGroups.playerGroup,
+      this.game.collisionGroups.enemyGroup,
+      this.game.collisionGroups.terrainGroup
+    ])
   }
 
   this.handleBounds = function () {
     if (this.sprite.y <= this.up || this.sprite.y >= this.down) {
-      this.sprite.body.velocity.y = this.sprite.body.velocity.y * -1
+      this.sprite.body.velocity.y *= -1
     }
     if (this.sprite.x >= this.right || this.sprite.x <= this.left) {
-      this.sprite.body.velocity.x = this.sprite.body.velocity.x * -1
+      this.sprite.body.velocity.x *= -1
     }
   }
 }

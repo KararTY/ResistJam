@@ -9,7 +9,7 @@ preloader.preload = function () {
   this.game.load.image('enemy', './images/test_enemy.png')
   this.game.load.image('bluepill', './images/bluepill.png')
   this.game.load.spritesheet('humanpepe', './images/H_walkingSheet.png', 90, 90)
-  this.game.load.spritesheet('pepe', './images/P_Sheet.png', 57, 85)
+  this.game.load.spritesheet('pepe', './images/P_Sheet.png', 57, 85, 10)
   this.game.load.image('background', './images/background1.png')
   this.game.load.image('wood', './images/wood.jpg')
 }

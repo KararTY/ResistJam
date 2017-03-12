@@ -16,9 +16,9 @@ var Character = function (sprite, controller) {
     this.game.physics.p2.enable(this.sprite)
     this.sprite.body.fixedRotation = true
     this.sprite.body.damping = 0.5
-    this.sprite.animations.add('walk', [1, 2, 3, 4, 5, 6], 12, false)
+    this.sprite.animations.add('walk', [1, 2, 3, 4, 5, 6, 0], 12, false)
     this.sprite.animations.add('idle', [0], 12, false)
-    this.sprite.animations.add('shoot', [7, 8, 9, 10, 0], 12, false)
+    this.sprite.animations.add('shoot', [7, 8, 9, 0], 12, false)
   }
 
   this.canJump = function () {
@@ -98,17 +98,13 @@ var Character = function (sprite, controller) {
       this.jump()
       this.sprite.animations.play('walk')
         // console.log('jump')
-    } else if (this.canJump() && this.sprite.animations.currentAnim.name !== 'shoot') {
+    } else if (this.canJump() && (this.sprite.frame === 0)) {
       this.sprite.animations.play('idle')
     }
     if (this.controller.shoot.isDown && this.controller.shoot.duration === 0) {
       this.shoot()
-      if (this.sprite.animations.currentAnim.name === 'idle') {
-        this.sprite.animations.play('shoot')
-      } else if (this.sprite.animations.currentAnim.frame === 0) {
-        this.sprite.animations.play('idle')
-      }
-      // console.log('shoot')
+      this.sprite.animations.play('shoot')
+        // console.log('shoot')
     }
   }
 }

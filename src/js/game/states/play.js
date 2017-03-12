@@ -35,13 +35,14 @@ play.create = function () {
   this.physics.p2.updateBoundsCollisionGroup()
 
   // Make Terrain
-  this.floor0 = new Floor(0, 1080, 3840, 64, 'wood')
-  this.floor1 = new Floor(0, 762, 3840, 32, 'wood')
-  this.floor2 = new Floor(0, 460, 3840, 32, 'wood')
-  this.floor3 = new Floor(0, 48, 3840, 256, 'wood')
+  this.floor0 = new Floor(this.game.world.centerX, 1080, 1920, 64, 'wood')
+  this.floor1 = new Floor(710, 762, 1420, 32, 'wood')
+  this.floor2_seg1 = new Floor(420, 460, 840, 32, 'wood')
+  this.floor2_seg2 = new Floor(1630, 460, 580, 32, 'wood')
+  this.floor3 = new Floor(this.game.world.centerX, 48, 1920, 256, 'wood')
 
   // Make the player.
-  this.player = new Character(this.game.add.sprite(0, 1080, 'pepe')) // note the new constructor
+  this.player = new Character(this.game.add.sprite(0, 1080 - 64, 'pepe')) // note the new constructor
   this.player.sprite.body.setCollisionGroup(this.game.collisionGroups.playerGroup)
   this.player.sprite.body.collides([
     this.game.collisionGroups.terrainGroup,
@@ -56,13 +57,12 @@ play.create = function () {
   console.dir(this.player)
 
   // Platforms
-  this.platform = new Platform(this.game.add.sprite(200, 1080 - this.player.sprite.height - 10, 'platform'),
-    this.player.sprite.height + 10, 0, 1080 - this.player.sprite.height - 10, 0)
-  this.platform.sprite.body.setCollisionGroup(this.game.collisionGroups.terrainGroup)
-  this.platform.sprite.body.collides([
-    this.game.collisionGroups.playerGroup
-  ])
-  this.platform.sprite.body.velocity.y = 100
+  this.elevator1 = new Platform(this.game.add.tileSprite(1090, 600, 500, 32, 'wood'), 460, 0,
+    630, 0)
+  this.elevator1.sprite.body.moveDown(100)
+  this.elevator2 = new Platform(this.game.add.tileSprite(1670, 800, 500, 32, 'wood'), 762, 0,
+    1020 - this.player.sprite.height - 15, 0)
+  this.elevator2.sprite.body.moveDown(100)
 
   // Enemies
   this.enemy = new Enemy(this.game.add.sprite(1920, 0, 'enemy'), 'testLogic')
@@ -91,7 +91,8 @@ play.update = function () {
   // Handle Input
   this.player.handleControllerInput()
   this.enemy.handleAction(this.player)
-  this.platform.handleBounds()
+  this.elevator1.handleBounds()
+  this.elevator2.handleBounds()
 }
 
 // Render is mostly used for debugging, also an endless loop. THIS IS HTML!
