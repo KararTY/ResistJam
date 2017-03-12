@@ -1,6 +1,5 @@
 let Character = require('../objs/character')
 let GameObject = require('../objs/gameobject')
-let Item = require('../objs/item')
 let Platform = require('../objs/platform')
 let Enemy = require('../objs/enemy')
 let Floor = require('../objs/floor')
@@ -17,6 +16,9 @@ play.create = function () {
   this.game.sounds.shoot = this.game.add.sound('shoot', 0.25)
   this.game.sounds.hit = this.game.add.sound('hit', 0.25)
   this.game.sounds.bgm = this.game.add.sound('level1bgm', 0.25)
+  this.game.healthbar = this.game.add.sprite(0, 0, 'healthbar')
+  this.game.healthbar.fixedToCamera = true
+  this.game.healthbar.scale.setTo(2, 2)
     // this.game.add.tileSprite(0, 1080, 1920, 1080)
     // this.game.world.scale.set(1.45) <--- Scale world, gotta figure out a good way.
 
@@ -98,17 +100,19 @@ play.update = function () {
   this.enemy.handleAction(this.player)
   this.elevator1.handleBounds()
   this.elevator2.handleBounds()
+  this.game.healthbar.frame = 6 - this.player.statistics.health.value.currentValue / 10
+  this.game.healthbar.bringToTop()
 }
 
 // Render is mostly used for debugging, also an endless loop. THIS IS HTML!
 play.render = function () {
   // Debug text
-  this.game.debug.text(`left.isDown: ${this.player.controller.left.isDown} - ${this.player.sprite.body.velocity.x}`, 100, 16)
-  this.game.debug.text(`right.isDown: ${this.player.controller.right.isDown}`, 100, 32)
-  this.game.debug.text(`up.isDown: ${this.player.controller.up.isDown} - ${this.player.sprite.body.velocity.y}`, 100, 48)
-  this.game.debug.text(`HEALTH: ${this.player.statistics.health.value.currentValue}`, 100, 80)
-  this.game.debug.text(`ENEMY HEALTH: ${this.enemy.statistics.health.value.currentValue}`, 100, 96)
-  this.game.debug.body(this.player.sprite.body)
+  /*  this.game.debug.text(`left.isDown: ${this.player.controller.left.isDown} - ${this.player.sprite.body.velocity.x}`, 100, 16)
+    this.game.debug.text(`right.isDown: ${this.player.controller.right.isDown}`, 100, 32)
+    this.game.debug.text(`up.isDown: ${this.player.controller.up.isDown} - ${this.player.sprite.body.velocity.y}`, 100, 48)
+    this.game.debug.text(`HEALTH: ${this.player.statistics.health.value.currentValue}`, 100, 80)
+    this.game.debug.text(`ENEMY HEALTH: ${this.enemy.statistics.health.value.currentValue}`, 100, 96)
+    this.game.debug.body(this.player.sprite.body)*/
 }
 
 module.exports = play

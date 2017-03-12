@@ -12,6 +12,8 @@ var Character = function (sprite, controller) {
   this.sprite = sprite || null
   this.controller = controller || new Controller()
   this.lastDirection = 1
+  this.statistics.health.value.maxValue = 60
+  this.statistics.health.value.currentValue = 60
   if (this.sprite !== null) {
     this.game.physics.p2.enable(this.sprite)
     this.sprite.body.fixedRotation = true
