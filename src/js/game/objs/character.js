@@ -11,7 +11,7 @@ var Item = require('./item')
 var Character = function (sprite, controller) {
   this.sprite = sprite || null
   this.controller = controller || new Controller()
-  this.lastDirection = 0
+  this.lastDirection = -1
   if (this.sprite !== null) {
     this.game.physics.p2.enable(this.sprite)
     this.sprite.body.fixedRotation = true
@@ -19,7 +19,6 @@ var Character = function (sprite, controller) {
     this.sprite.animations.add('walk', [1, 2, 3, 4, 5, 6], 12, false)
     this.sprite.animations.add('idle', [0], 12, false)
     this.sprite.animations.add('shoot', [7, 8, 9, 10, 0], 12, false)
-    console.log(this.sprite.animations)
   }
 
   this.canJump = function () {
@@ -48,12 +47,12 @@ var Character = function (sprite, controller) {
 
   this.createBullet = function (direction) {
     var bullet = null
-    var sprite = this.game.add.sprite(this.sprite.x + (this.sprite.width + 25) * direction, this.sprite.y, 'pill')
+    var sprite = this.game.add.sprite(this.sprite.x + 10 * direction, this.sprite.y, 'pill')
     bullet = new Item(sprite, 0, 10)
     bullet.sprite.autoCull = true
     bullet.sprite.outOfCameraBoundsKill = true
     this.game.physics.p2.enable(bullet.sprite)
-    bullet.sprite.body.kinematic = true
+    bullet.sprite.body.static = true
     bullet.sprite.body.setCollisionGroup(this.game.collisionGroups.playerBulletGroup)
     bullet.sprite.body.collides([
       this.game.collisionGroups.terrainGroup,

@@ -3,6 +3,7 @@ let GameObject = require('../objs/gameobject')
 let Item = require('../objs/item')
 let Platform = require('../objs/platform')
 let Enemy = require('../objs/enemy')
+let Floor = require('../objs/floor')
 let play = {}
 
 play.create = function () {
@@ -11,7 +12,9 @@ play.create = function () {
   this.game.collisionGroups = {}
   this.game.objectGroups = {}
   this.game.world.setBounds(0, 0, 1920, 1080)
-  // this.game.world.scale.set(1.45) <--- Scale world, gotta figure out a good way.
+  this.game.add.tileSprite(0, 0, 1920, 1080, 'background')
+    //this.game.add.tileSprite(0, 1080, 1920, 1080)
+    // this.game.world.scale.set(1.45) <--- Scale world, gotta figure out a good way.
 
   // Start Physics
   this.game.physics.startSystem(Phaser.Physics.P2JS)
@@ -31,8 +34,14 @@ play.create = function () {
   // Update Bounds
   this.physics.p2.updateBoundsCollisionGroup()
 
+  // Make Terrain
+  this.floor0 = new Floor(0, 1080, 3840, 64, 'wood')
+  this.floor1 = new Floor(0, 762, 3840, 32, 'wood')
+  this.floor2 = new Floor(0, 460, 3840, 32, 'wood')
+  this.floor3 = new Floor(0, 48, 3840, 256, 'wood')
+
   // Make the player.
-  this.player = new Character(this.game.add.sprite(0, 0, 'pepe')) // note the new constructor
+  this.player = new Character(this.game.add.sprite(0, 1080, 'pepe')) // note the new constructor
   this.player.sprite.body.setCollisionGroup(this.game.collisionGroups.playerGroup)
   this.player.sprite.body.collides([
     this.game.collisionGroups.terrainGroup,
@@ -48,7 +57,7 @@ play.create = function () {
 
   // Platforms
   this.platform = new Platform(this.game.add.sprite(200, 1080 - this.player.sprite.height - 10, 'platform'),
-  this.player.sprite.height + 10, 0, 1080 - this.player.sprite.height - 10, 0)
+    this.player.sprite.height + 10, 0, 1080 - this.player.sprite.height - 10, 0)
   this.platform.sprite.body.setCollisionGroup(this.game.collisionGroups.terrainGroup)
   this.platform.sprite.body.collides([
     this.game.collisionGroups.playerGroup
