@@ -3,9 +3,11 @@ let game = {}
 game.create = function () {
   // Shorthand for this.game
   let kek = this.game
+  this.game.sounds = {}
+  this.game.sounds.bgm = this.game.add.sound('main', 0.25)
   // Shorter variables for centering visual objects.
   let centerScreenX = kek.world.centerX
-  let centerScreenY = kek.world.centerY
+  // let centerScreenY = kek.world.centerY
 
   // Pepe in the corner.
   // let logo = kek.add.sprite(0, centerScreenY - 100, 'logo')
@@ -31,6 +33,7 @@ game.create = function () {
   // This triggers on input down when selecting a menu item.
   let selectMenuItem = {
     down: (child) => {
+      this.game.sounds.bgm.destroy()
       let item = child.details
       kek.state.start(item.function)
     }
@@ -56,6 +59,8 @@ game.create = function () {
   copyText.anchor.setTo(0.5, 1)
   copyText.text = '2017 Team Kekistan'
   copyText.padding.set(10, 0)
+
+  this.game.sounds.bgm.loopFull()
 }
 
 module.exports = game

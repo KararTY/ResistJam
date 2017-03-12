@@ -1,21 +1,20 @@
 let Character = require('../objs/character')
 let GameObject = require('../objs/gameobject')
-let Platform = require('../objs/platform')
 let Enemy = require('../objs/enemy')
 let Floor = require('../objs/floor')
-let play = {}
+let play3 = {}
 
-play.create = function () {
+play3.create = function () {
   // Set up game
   GameObject.prototype.game = this.game
   this.game.collisionGroups = {}
   this.game.objectGroups = {}
   this.game.world.setBounds(0, 0, 1920, 1080)
-  this.game.add.tileSprite(0, 0, 1920, 1080, 'background')
+  this.game.add.tileSprite(0, 0, 1920, 1080, 'background3')
   this.game.sounds = {}
   this.game.sounds.shoot = this.game.add.sound('shoot', 0.25)
   this.game.sounds.hit = this.game.add.sound('hit', 0.25)
-  this.game.sounds.bgm = this.game.add.sound('level1bgm', 0.25)
+  this.game.sounds.bgm = this.game.add.sound('level3bgm', 0.25)
   this.game.healthbar = this.game.add.sprite(5, 5, 'healthbar')
   this.game.healthbar.fixedToCamera = true
   this.game.healthbar.scale.setTo(2, 2)
@@ -42,10 +41,6 @@ play.create = function () {
 
   // Make Terrain
   this.floor0 = new Floor(this.game.world.centerX, 1080, 1920, 64, 'wood')
-  this.floor1 = new Floor(710, 762, 1420, 32, 'wood')
-  this.floor2_seg1 = new Floor(420, 460, 840, 32, 'wood')
-  this.floor2_seg2 = new Floor(1630, 460, 580, 32, 'wood')
-  this.floor3 = new Floor(this.game.world.centerX, 48, 1920, 256, 'wood')
 
   // Make the player.
   this.player = new Character(this.game.add.sprite(0, 1080 - 64, 'pepe')) // note the new constructor
@@ -62,14 +57,13 @@ play.create = function () {
   // Debug
   console.dir(this.player)
 
-  // Platforms
-  this.elevator1 = new Platform(this.game.add.tileSprite(1090, 600, 500, 32, 'wood'), 460, 0, 630, 0)
-  this.elevator1.sprite.body.moveDown(100)
-  this.elevator2 = new Platform(this.game.add.tileSprite(1670, 800, 500, 32, 'wood'), 762, 0, 1020 - this.player.sprite.height - 15, 0)
-  this.elevator2.sprite.body.moveDown(100)
+  let randomNumber = function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }
 
+  this.enemy = []
   // Enemies
-  this.enemy = new Enemy(this.game.add.sprite(1920, 0, 'enemy'))
+  this.enemy = new Enemy(this.game.add.sprite(randomNumber(0, 1920), randomNumber(0, 1080), 'enemy'))
   this.enemy.sprite.body.setCollisionGroup(this.game.collisionGroups.enemyGroup)
   this.enemy.sprite.body.collides([
     this.game.collisionGroups.terrainGroup,
@@ -77,27 +71,27 @@ play.create = function () {
     this.game.collisionGroups.playerBulletGroup
   ])
   this.game.sounds.bgm.loopFull()
+
+  console.log(this.game.world.height, this.game.world.width)
 }
 
 // Think of this function as an endless loop.
-play.update = function () {
+play3.update = function () {
   // Handle Input
   this.player.handleControllerInput()
   if (!this.enemy.destroyed) {
     this.enemy.handleAction(this.player)
   }
-  this.elevator1.handleBounds()
-  this.elevator2.handleBounds()
   this.game.healthbar.frame = 6 - this.player.statistics.health.value.currentValue / 10
   this.game.healthbar.bringToTop()
-  if (this.player.sprite.body.x <= 200 && this.player.sprite.body.y <= 500) {
+  if (this.player.sprite.body.y >= 1080 - 100 && this.player.sprite.body.x >= 1920 - 50) {
     this.game.sounds.bgm.destroy()
-    this.game.state.start('play2')
+    this.game.state.start('credits')
   }
 }
 
 // Render is mostly used for debugging, also an endless loop. THIS IS HTML!
-play.render = function () {
+play3.render = function () {
   /*
     this.game.debug.text(`left.isDown: ${this.player.controller.left.isDown} - ${this.player.sprite.body.velocity.x}`, 100, 16)
     this.game.debug.text(`right.isDown: ${this.player.controller.right.isDown}`, 100, 32)
@@ -108,4 +102,4 @@ play.render = function () {
   */
 }
 
-module.exports = play
+module.exports = play3

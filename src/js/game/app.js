@@ -6,6 +6,8 @@ var states = {
   preloader: require('./states/preloader.js'),
   game: require('./states/game.js'),
   play: require('./states/play.js'),
+  play2: require('./states/play2.js'),
+  play3: require('./states/play3.js'),
   credits: require('./states/credits.js'),
   cutscenes: require('./states/cutscenes.js')
 }

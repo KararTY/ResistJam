@@ -104,7 +104,7 @@ var Character = function (sprite, controller) {
     }
     if (this.controller.shoot.isDown && this.controller.shoot.duration === 0) {
       this.shoot()
-      if ((this.sprite.animations.currentAnim.name === 'idle' || 'shoot') && this.sprite.body.velocity.x < 0) {
+      if ((this.sprite.animations.currentAnim.name === 'idle' || 'shoot') && this.sprite.frame === 0) {
         this.sprite.animations.play('shoot')
       }
       // console.log('shoot')
