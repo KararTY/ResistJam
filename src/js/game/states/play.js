@@ -78,18 +78,6 @@ play.create = function () {
     this.game.collisionGroups.playerGroup,
     this.game.collisionGroups.playerBulletGroup
   ])
-
-  // Collision, null is callback on collision.
-  /*
-  this.player.sprite.body.collides(null, function (body1, body2) {
-    for (let item of this.items) {
-      if (item.sprite.body === body2) {
-        item.onPickup(this.player)
-        this.items.splice(this.items.indexOf(item), 1)
-      }
-    }
-  }, {player: this.player, items: this.items})
-  */
   this.game.sounds.bgm.loopFull()
 }
 
@@ -108,13 +96,14 @@ play.update = function () {
 
 // Render is mostly used for debugging, also an endless loop. THIS IS HTML!
 play.render = function () {
-  // Debug text
-  /*  this.game.debug.text(`left.isDown: ${this.player.controller.left.isDown} - ${this.player.sprite.body.velocity.x}`, 100, 16)
+  /*
+    this.game.debug.text(`left.isDown: ${this.player.controller.left.isDown} - ${this.player.sprite.body.velocity.x}`, 100, 16)
     this.game.debug.text(`right.isDown: ${this.player.controller.right.isDown}`, 100, 32)
     this.game.debug.text(`up.isDown: ${this.player.controller.up.isDown} - ${this.player.sprite.body.velocity.y}`, 100, 48)
     this.game.debug.text(`HEALTH: ${this.player.statistics.health.value.currentValue}`, 100, 80)
     this.game.debug.text(`ENEMY HEALTH: ${this.enemy.statistics.health.value.currentValue}`, 100, 96)
-    this.game.debug.body(this.player.sprite.body)*/
+    this.game.debug.body(this.player.sprite.body)
+  */
 }
 
 module.exports = play

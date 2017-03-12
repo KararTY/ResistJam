@@ -21,7 +21,7 @@ game.create = function () {
 
   // Create menu array with objects.
   let menu = [
-    {title: 'Play', function: 'play'},
+    {title: 'Play', function: 'cutscenes'},
     {title: 'Credits', function: 'credits'}
   ]
   let itemMargin = {starting: 125, margin: 50}

@@ -6,7 +6,8 @@ var states = {
   preloader: require('./states/preloader.js'),
   game: require('./states/game.js'),
   play: require('./states/play.js'),
-  credits: require('./states/credits.js')
+  credits: require('./states/credits.js'),
+  cutscenes: require('./states/cutscenes.js')
 }
 
 var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game')
