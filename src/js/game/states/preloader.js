@@ -17,7 +17,7 @@ preloader.preload = function () {
   this.game.load.spritesheet('healthbar', './images/healthbar.png', 96, 6)
   this.game.load.image('health', './images/healthpickup.png')
   this.game.load.spritesheet('normie', './images/normie.png', 59, 114)
-  this.game.load.spritesheet('boss', './images/Meliss.png', 64, 737)
+  this.game.load.spritesheet('boss', './images/Meliss.png', 64, 67, 11)
   this.game.load.audio('shoot', './audio/shoot.mp3')
   this.game.load.audio('hit', './audio/hit.mp3')
   this.game.load.audio('level1bgm', './audio/level1.ogg')

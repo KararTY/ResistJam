@@ -111,6 +111,7 @@ play.update = function () {
     this.game.state.start('play2')
   }
   if (this.player.statistics.health.value.currentValue === 0) {
+    this.game.world.setBounds(0, 0, this.game.width, this.game.height)
     this.game.sounds.bgm.destroy()
     this.game.state.start('game')
   }

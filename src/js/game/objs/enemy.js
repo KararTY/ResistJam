@@ -2,7 +2,7 @@ var Actor = require('./actor')
 var Item = require('./item')
 var Statistic = require('./statistic')
 
-var Enemy = function (sprite, logic) {
+var Enemy = function (sprite, logic, time) {
   this.sprite = sprite || null
   this.statistics = {
     health: new Statistic('health', 100, 0, 100),
@@ -11,7 +11,8 @@ var Enemy = function (sprite, logic) {
   this.lastDirection = 0
   this.canShoot = true
   this.shotTimer = this.game.time.create()
-  this.shotTimer.loop(750, function () {
+  this.shotTime = time || 750
+  this.shotTimer.loop(this.shotTime, function () {
     this.canShoot = true
   }, this)
   this.shotTimer.start()
@@ -79,9 +80,9 @@ var Enemy = function (sprite, logic) {
     }
   }
 
-  this.handleAction = function (player) {
+  this.handleAction = function (player, params) {
     if (this.statistics.health.value.currentValue > 0) {
-      this.logic(player)
+      this.logic(player, params)
     } else {
       this.sprite.destroy()
       this.destroyed = true
