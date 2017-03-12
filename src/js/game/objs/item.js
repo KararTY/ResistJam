@@ -8,6 +8,7 @@ var Item = function (sprite, health, damage) {
     actor.statistics.health.value.currentValue -= this.statistics.damage.value.currentValue
     actor.statistics.health.value.currentValue += this.statistics.health.value.currentValue
     this.sprite.destroy()
+    this.destroyed = true
     this.game.sounds.hit.play()
   }
 }

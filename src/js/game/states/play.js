@@ -97,7 +97,9 @@ play.create = function () {
 play.update = function () {
   // Handle Input
   this.player.handleControllerInput()
-  this.enemy.handleAction(this.player)
+  if (!this.enemy.destroyed) {
+    this.enemy.handleAction(this.player)
+  }
   this.elevator1.handleBounds()
   this.elevator2.handleBounds()
   this.game.healthbar.frame = 6 - this.player.statistics.health.value.currentValue / 10

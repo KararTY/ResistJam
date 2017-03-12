@@ -5,7 +5,8 @@
  *
  * In general this should be set before any game objects are invoked
  */
-var GameObject = function () { }
+var GameObject = function () {}
 GameObject.prototype.game = null
+GameObject.prototype.destroyed = false
 
 module.exports = GameObject

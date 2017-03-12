@@ -79,6 +79,18 @@ var Enemy = function (sprite, logic) {
       this.logic(player)
     } else {
       this.sprite.destroy()
+      this.destroyed = true
+      var sprite = this.game.add.sprite(this.sprite.x, this.sprite.y, 'health')
+      var pickup = new Item(sprite, 10, 0)
+      this.game.physics.p2.enable(pickup.sprite)
+      pickup.sprite.body.kinematic = true
+      pickup.sprite.body.setCollisionGroup(this.game.collisionGroups.enemyBulletGroup)
+      pickup.sprite.body.collides([
+        this.game.collisionGroups.playerGroup
+      ])
+      pickup.sprite.body.createGroupCallback(this.game.collisionGroups.playerGroup, function () {
+        pickup.onPickup(this.player)
+      }, this.game.state.getCurrentState())
     }
   }
 
