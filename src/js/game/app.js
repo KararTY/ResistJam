@@ -9,10 +9,9 @@ var states = {
   credits: require('./states/credits.js')
 }
 
-var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'game')
+var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game')
 // Automatically register each state.
 _.each(states, function (state, key) {
   game.state.add(key, state)
 })
-
 game.state.start('boot')

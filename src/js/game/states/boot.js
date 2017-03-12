@@ -8,6 +8,7 @@ boot.create = function () {
   }
 
   this.game.sound.mute = properties.mute
+  this.game.scale.scaleMode = Phaser.ScaleManager.RESIZE
 
   this.game.state.start('preloader')
 }

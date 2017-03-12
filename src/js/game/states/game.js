@@ -8,8 +8,8 @@ game.create = function () {
   let centerScreenY = kek.world.centerY
 
   // Pepe in the corner.
-  let logo = kek.add.sprite(0, centerScreenY - 100, 'logo')
-  logo.anchor.setTo(0, 0)
+  // let logo = kek.add.sprite(0, centerScreenY - 100, 'logo')
+  // logo.anchor.setTo(0, 0)
 
   // Create a basic css for text.
   let gameTitleStyle = { font: 'Bangers-Regular', fill: '#fff' }
@@ -52,7 +52,7 @@ game.create = function () {
   }
 
   // Create copyright text.
-  let copyText = kek.add.text(centerScreenX, window.innerHeight, '', {font: '2rem Bangers-Regular', fill: '#fff'})
+  let copyText = kek.add.text(centerScreenX, kek.world.height, '', {font: '2rem Bangers-Regular', fill: '#fff'})
   copyText.anchor.setTo(0.5, 1)
   copyText.text = '2017 Team Kekistan'
   copyText.padding.set(10, 0)
