@@ -3,6 +3,7 @@ let GameObject = require('../objs/gameobject')
 let Item = require('../objs/item')
 let Platform = require('../objs/platform')
 let Enemy = require('../objs/enemy')
+let Floor = require('../objs/floor')
 let play = {}
 
 play.create = function () {
@@ -34,22 +35,13 @@ play.create = function () {
   this.physics.p2.updateBoundsCollisionGroup()
 
   // Make Terrain
-  this.floor = this.game.add.tileSprite(0, 0, 3840, 64, 'wood')
-  this.floor.x = 0
-  this.floor.y = 1048
-  this.game.physics.p2.enable(this.floor)
-  this.floor.body.kinematic = true
-  this.floor.body.setCollisionGroup(this.game.collisionGroups.terrainGroup)
-  this.floor.body.collides([
-    this.game.collisionGroups.terrainGroup,
-    this.game.collisionGroups.enemyGroup,
-    this.game.collisionGroups.playerGroup,
-    this.game.collisionGroups.playerBulletGroup,
-    this.game.collisionGroups.enemyBulletGroup
-  ])
+  this.floor0 = new Floor(0, 1080, 3840, 64, 'wood')
+  this.floor1 = new Floor(0, 762, 3840, 32, 'wood')
+  this.floor2 = new Floor(0, 460, 3840, 32, 'wood')
+  this.floor3 = new Floor(0, 48, 3840, 256, 'wood')
 
   // Make the player.
-  this.player = new Character(this.game.add.sprite(0, 0, 'pepe')) // note the new constructor
+  this.player = new Character(this.game.add.sprite(0, 1080, 'pepe')) // note the new constructor
   this.player.sprite.body.setCollisionGroup(this.game.collisionGroups.playerGroup)
   this.player.sprite.body.collides([
     this.game.collisionGroups.terrainGroup,
