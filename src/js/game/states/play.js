@@ -13,7 +13,7 @@ play.create = function () {
   this.game.objectGroups = {}
   this.game.world.setBounds(0, 0, 1920, 1080)
   this.game.add.tileSprite(0, 0, 1920, 1080, 'background')
-    //this.game.add.tileSprite(0, 1080, 1920, 1080)
+    // this.game.add.tileSprite(0, 1080, 1920, 1080)
     // this.game.world.scale.set(1.45) <--- Scale world, gotta figure out a good way.
 
   // Start Physics
