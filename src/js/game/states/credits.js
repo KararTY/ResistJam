@@ -41,7 +41,7 @@ credits.create = function () {
     groupItem.anchor.setTo(0.5, 0.5)
     groupItem.padding.set(10, 16)
 
-    kek.add.tween(groupItem).to({y: (-kek.world.height + creditTextMargin) - 500}, 30000, 'Linear', true)
+    kek.add.tween(groupItem).to({y: (-kek.world.height + creditTextMargin) - 350}, 30000, 'Linear', true)
     creditTextMargin += 40
   }
 
