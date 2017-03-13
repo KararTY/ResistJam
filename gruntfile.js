@@ -222,16 +222,11 @@ module.exports = function (grunt) {
     'clean',
     'browserify',
     'jade',
-    'uglify',
     'copy:images',
     'copy:audio',
     'copy:fonts',
     'copy:css',
-    'copy:phaserP2Min',
-    'cacheBust',
-    'connect',
-    'open',
-    'watch'
+    'copy:phaserP2Min'
   ])
 
   grunt.registerTask('optimise', ['pngmin', 'copy:images'])
