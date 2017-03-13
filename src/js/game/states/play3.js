@@ -57,9 +57,11 @@ play3.create = function () {
   // Debug
   console.dir(this.player)
 
+  /*
   let randomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
   }
+  */
 
   this.enemies = []
     // Enemies
@@ -73,8 +75,8 @@ play3.create = function () {
   this.boss.sprite.animations.add(this.boss.sprite.animations.add('teleport', [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
   ], 12, false))
-  this.boss.statistics.health.value.maxValue = 200
-  this.boss.statistics.health.value.currentValue = 200
+  this.boss.statistics.health.value.maxValue = 1000
+  this.boss.statistics.health.value.currentValue = 1000
   this.boss.canTeleport = true
   this.boss.teleportTimer = this.game.time.create()
   this.boss.teleportTimer.loop(2000, function () {
@@ -108,7 +110,7 @@ play3.create = function () {
         this.sprite.scale.x = 1
         this.canTeleport = false
       }
-    } else if (player.statistics.health.value.currentValue <= 30 && enemies.length === 1) {
+    } else if (player.statistics.health.value.currentValue <= 500 && enemies.length === 1) {
       for (let i = 0; i < 3; ++i) {
         enemies.push(new Enemy(this.game.add.sprite(this.sprite.x * (i + 1), 100 * (i % 10), 'normie'), null, 3000))
         enemies[enemies.length - 1].canShoot = 0
@@ -156,7 +158,7 @@ play3.update = function () {
   if (this.player.statistics.health.value.currentValue === 0) {
     this.game.world.setBounds(0, 0, this.game.width, this.game.height)
     this.game.sounds.bgm.destroy()
-    this.game.state.start('game')
+    this.game.state.start('gameover')
   }
 }
 

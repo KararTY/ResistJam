@@ -60,7 +60,7 @@ play.create = function () {
   this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER)
 
   // Debug
-  console.dir(this.player)
+  // console.dir(this.player)
 
   // Platforms
   this.elevator1 = new Platform(this.game.add.tileSprite(1090, 600, 500, 32, 'wood'), 460, 0, 630, 0)
@@ -113,7 +113,7 @@ play.update = function () {
   if (this.player.statistics.health.value.currentValue === 0) {
     this.game.world.setBounds(0, 0, this.game.width, this.game.height)
     this.game.sounds.bgm.destroy()
-    this.game.state.start('game')
+    this.game.state.start('gameover')
   }
 }
 

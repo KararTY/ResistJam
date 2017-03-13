@@ -9,7 +9,8 @@ var states = {
   play2: require('./states/play2.js'),
   play3: require('./states/play3.js'),
   credits: require('./states/credits.js'),
-  cutscenes: require('./states/cutscenes.js')
+  cutscenes: require('./states/cutscenes.js'),
+  gameover: require('./states/gameover.js')
 }
 
 var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game')

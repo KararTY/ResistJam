@@ -55,7 +55,7 @@ play2.create = function () {
   this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER)
 
   // Debug
-  console.dir(this.player)
+  // console.dir(this.player)
 
 
   // Enemies
@@ -79,7 +79,8 @@ play2.create = function () {
     ])
   }
 
-  console.log(this.game.world.height - 100, this.game.world.width - 100)
+  // console.log(this.game.world.height - 100, this.game.world.width - 100)
+  this.game.sounds.bgm.loopFull()
 }
 
 // Think of this function as an endless loop.
@@ -102,7 +103,7 @@ play2.update = function () {
   if (this.player.statistics.health.value.currentValue === 0) {
     this.game.world.setBounds(0, 0, this.game.width, this.game.height)
     this.game.sounds.bgm.destroy()
-    this.game.state.start('game')
+    this.game.state.start('gameover')
   }
 }
 
